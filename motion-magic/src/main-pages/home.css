@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+}
+
+.left-nav {
+    background-color: #60ff95;
+    padding: 20px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    color: black;
+    font-weight: bold;
+}
+
+.navigation {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navigation li {
+    margin-bottom: 10px;
+}
+
+.navigation li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.right-side {
+    flex: 1;
+    padding: 20px;
+}
+
+:root {
+    --main-color: #60ff95;
+}
+
+.navbar-custom {
+    margin: 0;
+    padding: 0;
+    background-color: lightgray;
+    /*border-bottom: 1px solid #ccc;*/
+    height:80px;
+}
+.custom-button {
+    background-color: transparent !important;
+    border: 1px solid transparent !important; /* Set border to be transparent by default */
+    transition: border-color 0.3s ease !important; /* Add transition for smooth effect */
+    /*color: #28a745;*/
+}
+
+#signout:hover {
+    color:#dc3545   !important;/* Change border color on hover */
+}
+.custom-button:hover {
+    border-color: #6c757d !important;
+    color: #28a745 !important;/* Change border color on hover */
+}
+.logo{
+    scale:0.9 !important;
+}
