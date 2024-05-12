@@ -1,9 +1,11 @@
 from sympy import symbols, sympify
 from sympy import Eq, solve
+import json
 
 
 def motion_solver(equation_list):
     variables, string_variables = reformat_equations(equation_list)
+    print(variables, string_variables)
     return solve_equations(equation_list, string_variables)
 
 
@@ -55,10 +57,10 @@ def parser(equation, variables):
         variables.update(variables_side)
 
 
-equations = [
-    "x+y+w=10",
-    "2*x-y+z=5",
-    "17*y/z=13*w",
-    "w^2=3"
-]
-motion_solver(equations)
+# equations = [
+#     "x+y+w=10",
+#     "2*x-y+z=5",
+#     "17*y/z=13*w",
+#     "w^2=3"
+# ]
+# motion_solver(equations)

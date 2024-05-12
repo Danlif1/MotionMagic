@@ -16,5 +16,17 @@ pip install python-dotenv
 # Run the Python server script using the virtual environment's Python interpreter
 python tcp_server.py &
 
+cd ..
+cd ./server
+
+npm install
+
+# Check if the system is running Windows
+if [[ "$OSTYPE" == "msys" ]]; then
+    npm run windows
+else
+    npm run linux
+fi
+
 # Optionally, you can print a message indicating that the server has started
 echo "Server started."
