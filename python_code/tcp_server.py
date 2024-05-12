@@ -36,5 +36,5 @@ def start_server(host, port):
 
 if __name__ == "__main__":
     HOST = '0.0.0.0'
-    PORT = int(os.getenv('SERVER_PORT'))
+    PORT = int(os.environ.get('PORT_TCP'))
     start_server(HOST, PORT)

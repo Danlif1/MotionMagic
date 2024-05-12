@@ -1,6 +1,7 @@
 const net = require('net');
+const dotenv = require('dotenv');
 
-const multithreadedServerPort = 10002;
+const multithreadedServerPort = process.env.PORT_TCP;
 const multithreadedServerHost = '127.0.0.1';
 
 function sendToMultithreadedServer(request) {

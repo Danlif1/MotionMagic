@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+# Export the shared environment variable
+export PORT_TCP=10002
+
 # Change directory to where your Python script is located
 cd ./python_code
 
