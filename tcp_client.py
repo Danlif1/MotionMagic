@@ -15,7 +15,7 @@ if __name__ == "__main__":
     SERVER_HOST = '127.0.0.1'
     SERVER_PORT = 10000
     equations = [
-        "x+y+w=10*zxczxc",
+        "x+y+w=10",
         "2*x-y+z=5",
         "17*y/z=13*w",
         "w^2=3"

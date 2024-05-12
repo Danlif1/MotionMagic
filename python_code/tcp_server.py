@@ -2,6 +2,10 @@ import socket
 import threading
 import pickle
 import motionSolver
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def handle_client(client_socket):
     data = client_socket.recv(4096)
@@ -26,5 +30,5 @@ def start_server(host, port):
 
 if __name__ == "__main__":
     HOST = '0.0.0.0'
-    PORT = 10000
+    PORT = int(os.getenv('SERVER_PORT'))
     start_server(HOST, PORT)
