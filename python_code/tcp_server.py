@@ -15,8 +15,9 @@ def handle_client(client_socket):
         return
     received_data = json.loads(data.decode())
     solution = motionSolver.motion_solver(received_data)
+    print(solution)
     solution_str_keys = {str(key): value for key, value in solution.items()}
-    solution_serializable = {key: int(value) for key, value in solution_str_keys.items()}
+    solution_serializable = {key: str(value) for key, value in solution_str_keys.items()}
     solution_json = json.dumps(solution_serializable)
     client_socket.send(solution_json.encode())
     client_socket.close()

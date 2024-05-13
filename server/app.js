@@ -51,8 +51,8 @@ mongoose.connect(process.env.CONNECTION_STRING, { // Connect to MongoDB using th
 app.use(express.static('public')); // Serve static files from the 'public' directory
 
 // Routes
-const chatRoutes = require('./routes/motion');
-app.use('/', chatRoutes); // Mount the chat routes on the root path
+// const chatRoutes = require('./routes/motion');
+// app.use('/', chatRoutes); // Mount the chat routes on the root path
 
 // Start the server
 app.listen(process.env.PORT_MONGO, () => { // Start the server and listen on port process.env.PORT
@@ -61,9 +61,10 @@ app.listen(process.env.PORT_MONGO, () => { // Start the server and listen on por
 
 
 // EXAMPLE
-// const {sendToMultithreadedServer} = require("./connectTCPServer"); // Import the chat routes
-// async function sendDataToTCP() {
-//     const bloomFilterFormat = "[\"x=3\"]";
-//     let result = await sendToMultithreadedServer(bloomFilterFormat);
-// }
-// sendDataToTCP();
+const {sendToMultithreadedServer} = require("./connectTCPServer"); // Import the chat routes
+async function sendDataToTCP() {
+    const bloomFilterFormat = ["x+y+z=3"];
+
+    let result = await sendToMultithreadedServer(JSON.stringify(bloomFilterFormat));
+}
+sendDataToTCP();

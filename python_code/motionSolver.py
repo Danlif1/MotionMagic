@@ -5,8 +5,12 @@ import json
 
 def motion_solver(equation_list):
     variables, string_variables = reformat_equations(equation_list)
-    print(variables, string_variables)
-    return solve_equations(equation_list, string_variables)
+    result = solve_equations(equation_list, string_variables)
+    for var in variables:
+        if result.get(var) is None:
+                # If not, set its value to None
+                result[var] = "NULL"
+    return result
 
 
 def solve_equations(_equations, string_variables):
@@ -30,7 +34,6 @@ def solve_equations(_equations, string_variables):
 
     for sol in solution:
         params.update(sol)
-
     return params
 
 
