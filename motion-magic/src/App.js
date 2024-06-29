@@ -7,6 +7,7 @@ import Home from './main-pages/Home'
 import {BrowserRouter, Route, Routes, Navigate} from
       "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Solve from "./main-pages/Solve";
 
 
 
@@ -26,6 +27,7 @@ function App() {
           )
 
           }
+          <Route path='/solve' element={<Solve/>} ></Route>
         </Routes>
       </BrowserRouter>
 

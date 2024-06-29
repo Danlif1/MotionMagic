@@ -1,0 +1,15 @@
+.inputs{
+    padding-left: 30px !important;
+}
+
+.home{
+    /*margin-left:auto;*/
+    /*margin-right:0;*/
+    /*#float:right*/
+    float:right;
+    margin: 10px 10px 14px 10px;
+}
+
+h2{
+    padding-top:10px !important;
+}

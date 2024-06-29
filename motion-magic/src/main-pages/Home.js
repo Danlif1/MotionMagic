@@ -33,6 +33,9 @@ function Home({setLoggedIn}){
     function signOut() {
         navigate('/',{replace:true});
     }
+    function gotosolve(){
+        navigate('/solve',{replace:true});
+    }
     let strToDisplay, nameToDisplay;
     if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
         console.log("in if with: " + name_picture.profilePicture);
@@ -79,7 +82,7 @@ function Home({setLoggedIn}){
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Button variant="light" href="#" className="mr-2 custom-button">Solve</Button>
+                            <Button variant="light" href="#" className="mr-2 custom-button" onClick ={gotosolve}>Solve</Button>
                             <Button variant="light" href="#" className="mr-2 custom-button">History</Button>
                             <Button variant="light" href="#" className="mr-2 custom-button">Global Solutions</Button>
                         </Nav>
