@@ -1,7 +1,8 @@
 const net = require('net');
 const dotenv = require('dotenv');
 
-const multithreadedServerPort = process.env.PORT_TCP;
+// const multithreadedServerPort = process.env.PORT_TCP;
+const multithreadedServerPort = 10003;
 const multithreadedServerHost = '127.0.0.1';
 
 function sendToMultithreadedServer(request) {
@@ -12,10 +13,12 @@ function sendToMultithreadedServer(request) {
             console.log('Connected to multithreaded server');
 
             // Send data to the multithreaded server
+            console.log("sending: ", request)
             tcpClient.write(request);
         });
 
         tcpClient.on('data', (data) => {
+            console.log('data', data.toString())
             const receivedData = JSON.parse(data.toString());
             console.log('Received from multithreaded server:', receivedData);
             // Resolve the promise with the received data

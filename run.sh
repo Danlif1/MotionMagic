@@ -2,7 +2,7 @@
 
 
 # Export the shared environment variable
-export PORT_TCP=10002
+export PORT_TCP=10003
 
 # Change directory to where your Python script is located
 cd ./python_code
@@ -16,6 +16,7 @@ source venv/bin/activate
 # Install required dependencies in the virtual environment
 pip install sympy
 pip install python-dotenv
+pip install numpy
 
 # Run the Python server script using the virtual environment's Python interpreter
 python tcp_server.py &
