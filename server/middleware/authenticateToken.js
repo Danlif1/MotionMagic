@@ -1,4 +1,8 @@
 const jwt = require('jsonwebtoken');
+const customEnv = require('custom-env');
+
+customEnv.env(process.env.NODE_ENV, './config'); // Load environment variables from a custom file
+
 
 function authenticateToken(req, res, next) {
     // Get the token from the request headers
@@ -11,7 +15,7 @@ function authenticateToken(req, res, next) {
     }
 
     try {
-        const key = 'your-secret-key'
+        const key = process.env.SECRET_KEY;
         // Verify the token and attach it to the request object
         req.user = jwt.verify(token, key);
 
