@@ -3,11 +3,11 @@ const registerService = require('../services/register');
 const {join} = require("path");
 
 async function getUserByUsername(req, res) {
-    const user = await registerService.getUserByUsername(req.params.username, req.headers.username);
+    const user = await registerService.getUserByUsername(req.params.username, req.user.username);
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
     }
-    res.json(user);
+    res.status(200).json(user);
 }
 
 async function redirectHome(req, res) {

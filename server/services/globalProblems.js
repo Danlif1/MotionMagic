@@ -1,23 +1,29 @@
 const {Problem, User} = require('../models/motion');
 
-async function byTime(){
+async function byTime(nop){
+    if (!nop) {
+        nop = 5
+    }
     try {
-        const problems = await Problem.find()
-            .sort({ Time: -1 })  // Sort by Time in descending order
-            .limit(5);           // Limit to the 5 newest problems
-        return problems;
+        // Limit to the 5 newest problems
+        return await Problem.find()
+            .sort({Time: -1})  // Sort by Time in descending order
+            .limit(nop);
     } catch (error) {
         console.error('Error fetching problems by time:', error);
         return null;
     }
 }
 
-async function byMostLikes(){
+async function byMostLikes(nop){
+    if (!nop) {
+        nop = 5
+    }
     try {
-        const problems = await Problem.find()
-            .sort({ Likes: -1 })  // Sort by Time in descending order
-            .limit(5);           // Limit to the 5 newest problems
-        return problems;
+        // Limit to the 5 newest problems
+        return await Problem.find()
+            .sort({Likes: -1})  // Sort by Time in descending order
+            .limit(nop);
     } catch (error) {
         console.error('Error fetching problems by time:', error);
         return null;
@@ -36,14 +42,14 @@ async function likeProblem(problemID, username) {
         await problem.save();
         user.starredProblems.filter(p => p.ID !== problemID);
         await user.save();
-        return 200;
+        return "Removed like";
     } else {
         problem.Likes.push(username);
         await problem.save();
         user.starredProblems.push(problem);
         await user.save();
     }
-    return problem;
+    return "Liked problem";
 }
 
 module.exports = {
