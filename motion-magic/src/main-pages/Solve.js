@@ -1,31 +1,32 @@
-import React, { useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
 import './solve.css';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-function findFirstMismatchIndex(str1, str2) {
-    // Determine the length of the shortest string
-    const minLength = Math.min(str1.length, str2.length);
-
-    // Iterate through each character up to the length of the shortest string
-    for (let i = 0; i < minLength; i++) {
-        // Check if characters at the current position are different
-        if (str1[i] !== str2[i]) {
-            return i; // Return the index of the first mismatch
-        }
+import * as math from 'mathjs';
+const isValidExpression = (str) => {
+    try {
+        math.parse(str);
+        return true;
+    } catch (e) {
+        return false;
     }
-
-    // If no mismatch found within the shortest length, check if the lengths are different
-    if (str1.length !== str2.length) {
-        return minLength; // Return the index where the mismatch occurs due to length difference
+};
+const testParsing = (expression) => {
+    try {
+        const result = math.parse(expression);
+        console.log('Parsed result:', result.toString());
+        return true;
+    } catch (e) {
+        console.error('Parsing error:', e);
+        return false;
     }
+};
 
-    // If no mismatch found and lengths are equal, return -1 indicating no mismatch
-    return -1;
-}
-
+testParsing('2 + 2');
+testParsing('2 + 2');
 const Solve = () => {
     const navigate = useNavigate();
     const [error, setError] = React.useState('');
@@ -37,26 +38,91 @@ const Solve = () => {
     const [solutionVisible, setSolutionVisible] = useState(false); // State for toggling solution display
     const [riderData, setRiderData] = useState({}); // State to store input data for each rider
     const [finalRiderData,setFinalRiderData] = useState({});
+    const [equationsData, setEquationsData] = useState([]);
+    const [canSolve, setCanSolve] = useState(true);
+    useEffect(() => {
+        if (Object.keys(finalRiderData).length > 0) {
+            setEquationsFromFinal();
+
+        }
+    }, [finalRiderData]);
+    useEffect(()=>{
+        console.log('e: ')
+        console.log(equationsData);
+    },[equationsData]);
+    // check validation with a limit of 500ms per check, so not for every character input.
+    const debounce = (func, delay) => {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => func(...args), delay);
+        };
+    };
+
+    const validateInput = useCallback(
+        debounce((value,riderName, path, field) => {
+            if (!isValidExpression(value)) {
+                setError('Invalid mathematical expression in:'+riderName+"'s table, "+path+', '+field);
+                setCanSolve(false)
+            } else {
+                setError(''); // Clear the error if valid
+                setCanSolve(true)
+            }
+        }, 500), // 500ms debounce delay
+        []
+    );
     const handleAddPoint = () => {
-        if (newPoint.trim() === '') return;
-        const updatedPoints = [...points, newPoint.trim()];
+        let trimmedp = newPoint.trim()
+        if (trimmedp === '') return;
+        const pExists = points.some(point => point === trimmedp)
+        if(pExists){
+            setError(`Point already exists`);
+            return;
+        }
+        if(!validInputPointRider(trimmedp)){
+            setError(`Invalid input point: ${trimmedp}`);
+            return;
+        }
+        const updatedPoints = [...points, trimmedp];
         setPoints(updatedPoints);
         setNewPoint('');
 
         if (updatedPoints.length > 1) {
-            const updatedPaths = [...paths, `${updatedPoints[updatedPoints.length - 2]}-${newPoint.trim()}`];
+            const newPath = `${updatedPoints[updatedPoints.length - 2]}↔${newPoint.trim()}`;
+            const updatedPaths = [...paths, newPath];
             setPaths(updatedPaths);
+            updateRiderDataWithNewPath(newPath);
         }
+        setError(``);
+    };
+    const updateRiderDataWithNewPath = (newPath) => {
+        setRiderData((prevRiderData) => {
+            const newRiderData = { ...prevRiderData };
+
+            riders.forEach((rider) => {
+                if (!newRiderData[rider.name]) {
+                    newRiderData[rider.name] = [];
+                }
+                // Check if the path already exists for this rider
+                const pathExists = newRiderData[rider.name].some((pathData) => pathData.path === newPath);
+                if (!pathExists) {
+                    newRiderData[rider.name].push({ path: newPath, time: '', velocity: '', distance: '' });
+                }
+            });
+
+            return newRiderData;
+        });
     };
 
 
-    const getShortestReps = () => {
-
-    }
     const handleAddRider = () => {
         // Trim the new rider's name and check if it's empty
         const trimmedRiderName = newRider.trim();
         if (trimmedRiderName === '') {
+            return;
+        }
+        if(!validInputPointRider(trimmedRiderName)) {
+            setError(`Invalid input rider: ${trimmedRiderName}`);
             return;
         }
 
@@ -109,6 +175,14 @@ const Solve = () => {
 
 
     }
+    const setEquationsFromFinal = () => {
+        console.log('final: ')
+        console.log(finalRiderData)
+        setEquationsData(() => (riders.map((rider) =>
+        (finalRiderData[rider.name]?.map((pathData) =>
+            get_eq(pathData.time,pathData.velocity,pathData.distance))))))
+
+    }
     const handleSolve = () => {
         setSolutionVisible(true); // Toggle visibility of solution
         finalizeData()
@@ -117,6 +191,9 @@ const Solve = () => {
     };
 
     const handleTableInputChange = (riderName, pathIndex, field, value) => {
+        //validate input
+        validateInput(value,riderName, paths[pathIndex], field);
+        // change rider data regardless of check result
         setRiderData(prevState => ({
             ...prevState,
             [riderName]: prevState[riderName].map((pathData, index) => {
@@ -131,24 +208,46 @@ const Solve = () => {
         const num = Number(value);
         return Number.isFinite(num);
     }
-    const display_eq =(t,v,d) => {
+    const validInputPointRider = (str) =>{
+        const expressionPattern = /[\+\-\*\/\^ ]/; //from chatgpt
+
+        // Check if the string matches the pattern
+        return !expressionPattern.test(str);
+    }
+    const needsParentheses = (str) => {
+        const trimmedStr = str.trim();
+
+        const expressionPattern = /[\+\-\*\/\^ ]/; //from chatgpt
+
+        // Check if the string matches the pattern
+        return expressionPattern.test(trimmedStr);
+    };
+    const get_eq =(t,v,d) => {
         let nt = Number(t)
         let nv = Number(v)
         let it = Number.isFinite(nt)
         let iv = Number.isFinite(nv)
+        let et=t;
+        let ev = v;
+        if(needsParentheses(t)){
+            et = '('+t+')'
+        }
+        if(needsParentheses(v)){
+            ev = '('+v+')'
+        }
         if (!it && !iv) {
-            setError('Equations are not linear')
-            return `${t}*${v}=${d}`
+            //setError('Equations are not linear')
+            return `${et}*${ev}=${d}`
         }
         if (it && !iv) {
             if(nt!==1) {
-                return `${t}${v}=${d}`
+                return `${et}*${ev}=${d}`
             }
-            return `${v}=${d}`
+            return `${ev}=${d}`
         }
         else if (!it && iv) {
             if(nv!==1)
-                return `${v}${t}=${d}`
+                return `${v}*${t}=${d}`
             return `${t}=${d}`
         }
         return `${nt*nv}=${d}`
@@ -185,7 +284,7 @@ const Solve = () => {
                     </span>
                 </span>
                 <span>
-                    <Button variant="success" className="ml-2" onClick={handleSolve}>Solve</Button> {/* Solve Button */}
+                    <Button variant="success" className="ml-2" onClick={handleSolve} disabled={!canSolve}>Solve</Button> {/* Solve Button */}
                 </span>
                 {error && (
                     <div className='text-danger' style={{ marginLeft: '10px' }}>
@@ -268,11 +367,18 @@ const Solve = () => {
                             {finalRiderData[rider.name]?.map((data, index) => (
                                 <div key={index} className="p-2">
                                     <InlineMath math={data.path} /> - Time: <InlineMath math={data.time}/>, Velocity: <InlineMath math={data.velocity}/>, Distance: <InlineMath math={data.distance}/>
-                                    <br/>
-                                    <InlineMath math={display_eq(data.time,data.velocity,data.distance)}/>
+
                                 </div>
                             ))}
                         </div>
+                    ))}
+                    {equationsData.map((dataPerRider) => (
+                        dataPerRider.map((equation, index) => (
+                            <div key={index} className="mt-2">
+                            <InlineMath math={equation}/>
+                        </div>
+                        ))
+
                     ))}
                 </div>
             )}
