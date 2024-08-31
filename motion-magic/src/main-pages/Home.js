@@ -36,7 +36,7 @@ function Home({setLoggedIn}){
     function gotosolve(){
         navigate('/solve',{replace:true});
     }
-    let strToDisplay, nameToDisplay;
+    let strToDisplay
     if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
         console.log("in if with: " + name_picture.profilePicture);
         strToDisplay=name_picture.profilePicture
@@ -46,9 +46,9 @@ function Home({setLoggedIn}){
     }else{
         strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
     }
-    if(name_picture.userName===""){
-        nameToDisplay = "someUser"
-    }
+    // if(name_picture.userName===""){
+    //     nameToDisplay = "someUser"
+    // }
     return (
         <>
         <div className="navbar-custom">
@@ -74,7 +74,7 @@ function Home({setLoggedIn}){
                             alt="Profile Picture"
                         />
                         <span style={{marginLeft:'10px'}}>
-                        {nameToDisplay}
+                        {name_picture.displayname}
                             </span>
                     </Navbar.Brand>
                     {/* Left Navigation Bar */}
@@ -101,7 +101,7 @@ function Home({setLoggedIn}){
         </div>
         <Container fluid>
                 <Container className="text-center" style={{marginTop: '20px'}}>
-                    <h1>Hello, {nameToDisplay}</h1>
+                    <h1>Hello, {name_picture.displayname}</h1>
                 </Container>
         </Container>
         </>

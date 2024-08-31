@@ -219,13 +219,16 @@ function Signup() {
     }
 
     async function handleSubmit(event) {
+        console.log('Submitting')
         event.preventDefault();
         const username = event.target.username.value;
         const password1 = event.target.password1.value;
         const password2 = event.target.password2.value;
         const displayname = event.target.displayname.value;
-        if(!isValid(username,password1,password2,displayname))
+        if(!isValid(username,password1,password2,displayname)) {
+            console.log('out here')
             return;
+        }
         // saving data
         let pic_url = pic;
         if (pic_url === '')
@@ -239,25 +242,28 @@ function Signup() {
         /**
          * TODO: Uncomment this when we have server
          */
-        // let newUser = {
-        //     username: username, password: password1, displayName: displayname, profilePic: pic_url
+        let newUser = {
+            Username: username, Password: password1, DisplayName: displayname, ProfilePicture: pic_url
+        }
+        // post user to server
+        console.log('sending')
+        const res = await fetch('http://localhost:5000/api/users', {
+            'method': 'post',
+            'headers' :{
+                'Content-Type': 'application/json',
+            },
+            'body':JSON.stringify(newUser)
+
+        })
+        console.log('after')
+        // if(res.status===200) {
+        //     console.log('OK - post user');
         // }
-        // // post user to server
-        // const res = await fetch('http://localhost:5000/api/Users', {
-        //     'method': 'post',
-        //     'headers' :{
-        //         'Content-Type': 'application/json',
-        //     },
-        //     'body':JSON.stringify(newUser)
-        //
-        // })
-        // // if(res.status===200) {
-        // //     console.log('OK - post user');
-        // // }
-        // if(res.status!==200) {
-        //     setErrors({...errors, username: {message: "Username already exists or picture too large.", invalid:1}});
-        //     return;
-        // }
+        if(res.status!==200) {
+            console.log('f:'+res.status)
+            setErrors({...errors, username: {message: "Username already exists or picture too large.", invalid:1}});
+            return;
+        }
         navigate('/login',{replace:true});
 
     }
