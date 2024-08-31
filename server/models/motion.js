@@ -4,8 +4,9 @@ const { Schema } = mongoose;
 const ProblemSchema = new Schema({
     ID: {
         type: String,
-        required: true,
-        unique: true
+        //required: true, Creates bugs on windows.
+        //unique: true
+        nullable:true
     },
     Creator: {
         type: String,
