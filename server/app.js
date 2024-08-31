@@ -58,13 +58,3 @@ app.use('/', registerRoutes); // Mount the chat routes on the root path
 app.listen(process.env.PORT_MONGO, () => { // Start the server and listen on port process.env.PORT
     console.log('Server started on port: ' + process.env.PORT_MONGO);
 });
-
-
-// EXAMPLE
-const {sendToMultithreadedServer} = require("./connectTCPServer"); // Import the chat routes
-async function sendDataToTCP() {
-    const bloomFilterFormat = ["x+y+z=3","y+z=3","y=1"];
-    console.log("equation: ", bloomFilterFormat)
-    let result = await sendToMultithreadedServer(JSON.stringify(bloomFilterFormat));
-}
-sendDataToTCP();

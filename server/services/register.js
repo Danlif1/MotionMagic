@@ -31,7 +31,7 @@ async function registerUser(username, displayName, password, profilePicture) {
         return null;
     }
     const userByDisplay = await User.findOne({ DisplayName: displayName });
-    if (userByName) {
+    if (userByDisplay) {
         logErrorToFile("User tried registering with display name that already exists: " + displayName);
         return null;
     }
