@@ -13,3 +13,6 @@
 h2{
     padding-top:10px !important;
 }
+body {
+    padding-top: 80px; /* Adjust this value based on the height of your navbar */
+}

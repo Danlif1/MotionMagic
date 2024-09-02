@@ -2,13 +2,13 @@ import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {name_picture} from "./Home";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCalculator, faClockRotateLeft, faGlobe, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
-
+import './home.css'
 
 
 const TopBar = ({strToDisplay,displayName,gotosolve,gotohistory,signOut,username}) => {
     return (
         <div className="navbar-custom">
-            <Container fluid>
+            <Container fluid >
                 <Navbar variant="light" expand="lg" className="justify-content-between navbar-custom">
                     <Navbar.Brand>
                         <img
