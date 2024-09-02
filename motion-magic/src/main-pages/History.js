@@ -1,0 +1,103 @@
+import React, {useCallback, useEffect, useState} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'katex/dist/katex.min.css';
+import {InlineMath} from 'react-katex';
+import Button from 'react-bootstrap/Button';
+import {useNavigate} from 'react-router-dom';
+import {token} from '../login_signup/login/Login'
+import axios from 'axios';
+import MotionProblemCard from "./MotionProblemCard";
+import {Container, Nav, Navbar} from "react-bootstrap";
+import {name_picture} from "./Home";
+import TopBar from "./TopBar"; // Import axios for making HTTP requests
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSync } from '@fortawesome/free-solid-svg-icons';
+import './history.css'
+const History = () => {
+    const [problems, setProblems] = useState([]);
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
+
+    function signOut() {
+        navigate('/', {replace: true});
+    }
+
+    function gotosolve() {
+        navigate('/solve', {replace: true});
+    }
+
+    function gotohistory() {
+        navigate('/history', {replace: true});
+    }
+
+    let strToDisplay;
+    if (name_picture.profilePicture === "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg") {
+        console.log("in if with: " + name_picture.profilePicture);
+        strToDisplay = name_picture.profilePicture
+    } else if (name_picture.userName !== "") {
+        console.log("in else with: " + name_picture.profilePicture);
+        strToDisplay = `data:image/jpeg;charset=utf-8;base64,${name_picture.profilePicture}`
+    } else {
+        strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
+    }
+    // Define the function to fetch problems from the server
+    const fetchProblems = useCallback(async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/myProblems', {
+                headers: {
+                    Authorization: `Bearer ${token}` // Assuming token is imported and available
+                }
+            });
+            setProblems(response.data['problems']);
+            console.log(response.data);
+            setError('')
+        } catch (error) {
+            console.error("Error fetching problems:", error);
+            if (error.response && error.response.status === 401) {
+                // Handle unauthorized access, maybe redirect to login
+                setError(error.response.data.message || 'Unauthorized access');
+            } else {
+                setError(error.response.data.message);
+            }
+        }
+    }, [token]);
+
+    // Fetch problems when the component mounts
+    useEffect(() => {
+        fetchProblems();
+    }, [fetchProblems]);
+
+    return (
+
+        <>
+            <TopBar strToDisplay={strToDisplay} displayName={name_picture.displayname} gotohistory={gotohistory}
+                    gotosolve={gotosolve} signOut={signOut} username={name_picture.userName} />
+            <div className="content-wrapper">
+                <div className="header-container">
+                    <h1 className="d-inline">Motion Problem History</h1>
+                    <Button variant="light" href="#" className="mr-2 custom-button refresh-button" onClick={fetchProblems}>
+                        <FontAwesomeIcon icon={faSync} />
+                    </Button>
+                </div>
+                <div >
+                    {!error && problems.map((problem) => (
+                        <MotionProblemCard key={problem._id.$oid} problem={problem} />
+                    ))}
+                    {error && (
+                        <div className="alert alert-danger">
+                            {error}
+                        </div>
+                    )}
+                    {problems.length === 0 && !error && (
+                        <div>
+                            <h3>No Motion Problem History!</h3>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </>
+    )
+        ;
+};
+
+export default History;

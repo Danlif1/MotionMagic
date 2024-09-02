@@ -8,7 +8,7 @@ import {BrowserRouter, Route, Routes, Navigate} from
       "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Solve from "./main-pages/Solve";
-
+import History from "./main-pages/History"
 
 
 
@@ -29,6 +29,7 @@ function App() {
 
           }
           <Route path='/solve' element={<Solve/>} ></Route>
+            <Route path='/history' element={<History/>} ></Route>
         </Routes>
       </BrowserRouter>
 

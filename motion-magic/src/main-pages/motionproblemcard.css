@@ -1,0 +1,9 @@
+/* Add this CSS to your styles.css or equivalent stylesheet */
+.collapsed-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Show only two lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 4.5em; /* Roughly two lines of text */
+}

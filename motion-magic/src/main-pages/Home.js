@@ -1,6 +1,8 @@
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import './home.css';
-import {useNavigate} from "react-router-dom"; // Import the CSS file
+import {useNavigate} from "react-router-dom";
+import TopBar from "./TopBar";
+import React from "react"; // Import the CSS file
 
 
 export var name_picture = {
@@ -36,6 +38,9 @@ function Home({setLoggedIn}){
     function gotosolve(){
         navigate('/solve',{replace:true});
     }
+    function gotohistory(){
+        navigate('/history',{replace:true});
+    }
     let strToDisplay
     if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
         console.log("in if with: " + name_picture.profilePicture);
@@ -51,54 +56,8 @@ function Home({setLoggedIn}){
     // }
     return (
         <>
-        <div className="navbar-custom">
-            <Container fluid>
-                <Navbar  variant="light" expand="lg" className="justify-content-between navbar-custom">
-                    <Navbar.Brand>
-                        <img
-                            src="/logo.png" // Replace with your logo URL
-                            width="80"
-                            height="70"
-                            className="d-inline-block align-top mr-2 logo"
-                            alt="Logo"
-                        />
-                    </Navbar.Brand>
-
-                    {/* Profile Picture and Name*/}
-                    <Navbar.Brand>
-                    <img
-                            src={strToDisplay}// Replace with your profile picture URL
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top rounded-circle mr-2"
-                            alt="Profile Picture"
-                        />
-                        <span style={{marginLeft:'10px'}}>
-                        {name_picture.displayname}
-                            </span>
-                    </Navbar.Brand>
-                    {/* Left Navigation Bar */}
-
-                    <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Button variant="light" href="#" className="mr-2 custom-button" onClick ={gotosolve}>Solve</Button>
-                            <Button variant="light" href="#" className="mr-2 custom-button">History</Button>
-                            <Button variant="light" href="#" className="mr-2 custom-button">Global Solutions</Button>
-                        </Nav>
-                        {/* Right Side */}
-                    </Navbar.Collapse>
-                        <Nav>
-                            <Button variant="light" href="#" className="custom-button signout-button"
-                                    id="signout" onClick={signOut}>Sign-out</Button>
-                        </Nav>
-
-                </Navbar>
-
-                {/* Hello message */}
-
-            </Container>
-        </div>
+            <TopBar strToDisplay={strToDisplay} displayName={name_picture.displayname} gotohistory={gotohistory}
+                    gotosolve={gotosolve} signOut={signOut} username={name_picture.userName}/>
         <Container fluid>
                 <Container className="text-center" style={{marginTop: '20px'}}>
                     <h1>Hello, {name_picture.displayname}</h1>

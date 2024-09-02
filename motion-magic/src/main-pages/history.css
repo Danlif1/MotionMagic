@@ -1,0 +1,35 @@
+/* Ensure the content wrapper takes the full viewport height */
+.content-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header container for fixed header or top section */
+.header-container {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Main content area that scrolls */
+.history-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/*!* Optional: Add styles to control scrollbar appearance *!*/
+/*.history-content::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*}*/
+
+/*.history-content::-webkit-scrollbar-thumb {*/
+/*    background: #888;*/
+/*    border-radius: 10px;*/
+/*}*/
+
+/*.history-content::-webkit-scrollbar-thumb:hover {*/
+/*    background: #555;*/
+/*}*/

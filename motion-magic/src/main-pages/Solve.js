@@ -6,6 +6,12 @@ import './solve.css';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import * as math from 'mathjs';
+import {token} from '../login_signup/login/Login'
+import axios from 'axios';
+import SolutionSteps from "./SolutionSteps";
+import {name_picture} from "./Home";
+import TopBar from "./TopBar";
+import ShowEquations from "./ShowEquations"; // Import axios for making HTTP requests
 const isValidExpression = (str) => {
     try {
         math.parse(str);
@@ -40,17 +46,83 @@ const Solve = () => {
     const [finalRiderData,setFinalRiderData] = useState({});
     const [equationsData, setEquationsData] = useState([]);
     const [canSolve, setCanSolve] = useState(true);
+    const [serverResponse, setServerResponse] = useState(null);
+    let strToDisplay
+    if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
+        console.log("in if with: " + name_picture.profilePicture);
+        strToDisplay=name_picture.profilePicture
+    } else if (name_picture.userName!=="") {
+        console.log("in else with: " + name_picture.profilePicture);
+        strToDisplay = `data:image/jpeg;charset=utf-8;base64,${name_picture.profilePicture}`
+    }else{
+        strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
+    }
+    function signOut() {
+        navigate('/',{replace:true});
+    }
+    function gotosolve(){
+        navigate('/solve',{replace:true});
+    }
+    function gotohistory(){
+        navigate('/history',{replace:true});
+    }
     useEffect(() => {
         if (Object.keys(finalRiderData).length > 0) {
             setEquationsFromFinal();
 
         }
     }, [finalRiderData]);
-    useEffect(()=>{
-        console.log('e: ')
-        console.log(equationsData);
-    },[equationsData]);
-    // check validation with a limit of 500ms per check, so not for every character input.
+    useEffect(() => {
+        if (equationsData.length > 0) {
+            console.log('Sending solve request')
+            sendSolveRequest();
+        }
+    }, [equationsData]);
+
+    const sendSolveRequest = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/solve', {
+                equations: equationsData.flat()
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Include authentication token
+                    'Content-Type': 'application/json'
+                }
+            });
+            setServerResponse(response.data['solution']); // Store the response
+            console.log('Server response:', response.data); // Log the response for debugging
+        } catch (error) {
+            console.error('Error sending solve request:', error);
+            setError('Failed to solve equations. Please try again.');
+        }
+    };
+    // const sendSolveRequest = async () => {
+    //     try {
+    //         console.log(`token: ${token}`)
+    //         const response = await fetch('http://localhost:5000/api/solve', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`, // Include authentication token
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 equations: equationsData.flat() // Flatten and send equations
+    //             })
+    //         });
+    //
+    //         // Check if the response is not ok (e.g., 404, 500 errors)
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! status: ${response.status}`);
+    //         }
+    //
+    //         const data = await response.json();
+    //         setServerResponse(data); // Store the response
+    //         console.log('Server response:', data); // Log the response for debugging
+    //     } catch (error) {
+    //         console.error('Error sending solve request:', error);
+    //         setError('Failed to solve equations. Please try again.');
+    //     }
+    // };
     const debounce = (func, delay) => {
         let timer;
         return (...args) => {
@@ -58,6 +130,7 @@ const Solve = () => {
             timer = setTimeout(() => func(...args), delay);
         };
     };
+
 
     const validateInput = useCallback(
         debounce((value,riderName, path, field) => {
@@ -188,6 +261,7 @@ const Solve = () => {
         finalizeData()
         console.log(riderData); // You can see the values entered in the table for debugging
         console.log(finalRiderData);
+        console.log(equationsData)
     };
 
     const handleTableInputChange = (riderName, pathIndex, field, value) => {
@@ -254,14 +328,17 @@ const Solve = () => {
     }
 
     return (
+        <>
+        <TopBar strToDisplay={strToDisplay} displayName={name_picture.displayname} gotohistory={gotohistory}
+                gotosolve={gotosolve} signOut={signOut} username={name_picture.userName}/>
         <div>
-            <div style={{ paddingTop: '3px' }}>
+            <div style={{paddingTop: '3px'}}>
                 <span className="d-inline-block">
                     <h1 className="d-inline container-lg">Motion Problem Solver</h1>
                     <Button variant="light" href="#" className="mr-2 custom-button home" onClick={gohome}>Home</Button>
                 </span>
-                <h2 style={{ margin: '10px' }}>Problem parameters:</h2>
-                <span className="inputs" style={{ margin: '10px' }}>
+                <h2 style={{margin: '10px'}}>Problem parameters:</h2>
+                <span className="inputs" style={{margin: '10px'}}>
                     <input
                         type="text"
                         value={newPoint}
@@ -269,9 +346,9 @@ const Solve = () => {
                         className="form-control d-inline w-auto mr-2"
                         placeholder="Add a new point"
                     />
-                    <button className="btn btn-primary mr-2" style={{ marginBottom: '4px', marginLeft: '5px' }}
+                    <button className="btn btn-primary mr-2" style={{marginBottom: '4px', marginLeft: '5px'}}
                             onClick={handleAddPoint}>Add Point</button>
-                    <span style={{ marginLeft: '10px' }}>
+                    <span style={{marginLeft: '10px'}}>
                         <input
                             type="text"
                             value={newRider}
@@ -280,30 +357,32 @@ const Solve = () => {
                             placeholder="Add a new rider"
                         />
                         <button className="btn btn-secondary mr-2"
-                                style={{ marginBottom: '4px', marginLeft: '5px' }} onClick={handleAddRider}>Add Rider</button>
+                                style={{marginBottom: '4px', marginLeft: '5px'}}
+                                onClick={handleAddRider}>Add Rider</button>
                     </span>
                 </span>
                 <span>
-                    <Button variant="success" className="ml-2" onClick={handleSolve} disabled={!canSolve}>Solve</Button> {/* Solve Button */}
+                    <Button variant="success" className="ml-2" onClick={handleSolve}
+                            disabled={!canSolve}>Solve</Button> {/* Solve Button */}
                 </span>
                 {error && (
-                    <div className='text-danger' style={{ marginLeft: '10px' }}>
+                    <div className='text-danger' style={{marginLeft: '10px'}}>
                         {error}
                     </div>
                 )}
             </div>
             <div>
-                <h3 style={{ margin: '10px' }}>Current Points</h3>
+                <h3 style={{margin: '10px'}}>Current Points</h3>
                 <div className="d-flex flex-wrap">
                     {points.map((point, index) => (
-                        <div key={index} className="p-2"><InlineMath math={point} /></div>
+                        <div key={index} className="p-2"><InlineMath math={point}/></div>
                     ))}
                 </div>
             </div>
             <div>
                 {riders.map((rider, riderIndex) => (
                     <div key={riderIndex} className="mt-4">
-                        <h3 style={{ margin: '10px' }}>{rider.name}'s Table</h3>
+                        <h3 style={{margin: '10px'}}>{rider.name}'s Table</h3>
                         <div className="d-flex justify-content-center">
                             <div className="table-responsive w-75">
                                 <table className="table table-bordered text-center">
@@ -318,13 +397,13 @@ const Solve = () => {
                                     <tbody>
                                     {paths.map((path, pathIndex) => (
                                         <tr key={pathIndex}>
-                                            <td><InlineMath math={path} /></td>
+                                            <td><InlineMath math={path}/></td>
                                             <td>
                                                 <input
                                                     type="text"
                                                     className="form-control"
                                                     placeholder="Time"
-                                                    //value={riderData[rider.name]?.[pathIndex]?.time || ''}
+                                                    value={riderData[rider.name]?.[pathIndex]?.time || ''}
                                                     onChange={(e) => handleTableInputChange(rider.name, pathIndex, 'time', e.target.value)}
                                                 />
                                             </td>
@@ -333,7 +412,7 @@ const Solve = () => {
                                                     type="text"
                                                     className="form-control"
                                                     placeholder="Velocity"
-                                                    //value={riderData[rider.name]?.[pathIndex]?.velocity || ''}
+                                                    value={riderData[rider.name]?.[pathIndex]?.velocity || ''}
                                                     onChange={(e) => handleTableInputChange(rider.name, pathIndex, 'velocity', e.target.value)}
                                                 />
                                             </td>
@@ -342,7 +421,7 @@ const Solve = () => {
                                                     type="text"
                                                     className="form-control"
                                                     placeholder="Distance"
-                                                    //value={riderData[rider.name]?.[pathIndex]?.distance || ''}
+                                                    value={riderData[rider.name]?.[pathIndex]?.distance || ''}
                                                     onChange={(e) => handleTableInputChange(rider.name, pathIndex, 'distance', e.target.value)}
                                                 />
                                             </td>
@@ -358,7 +437,7 @@ const Solve = () => {
 
             {solutionVisible && ( // Conditionally render the solution
                 <div>
-                    <h3 style={{ margin: '10px' }}>Solution</h3>
+                    <h3 style={{margin: '10px'}}>Solution</h3>
                     <div className="p-2">Points: {points.join(', ')}</div>
                     {riders.map((rider, riderIndex) => (
                         <div key={riderIndex} className="mt-2">
@@ -366,23 +445,31 @@ const Solve = () => {
                             <div className="p-2">Paths: {rider.paths.join(', ')}</div>
                             {finalRiderData[rider.name]?.map((data, index) => (
                                 <div key={index} className="p-2">
-                                    <InlineMath math={data.path} /> - Time: <InlineMath math={data.time}/>, Velocity: <InlineMath math={data.velocity}/>, Distance: <InlineMath math={data.distance}/>
+                                    <InlineMath math={data.path}/> - Time: <InlineMath math={data.time}/>,
+                                    Velocity: <InlineMath math={data.velocity}/>, Distance: <InlineMath
+                                    math={data.distance}/>
 
                                 </div>
                             ))}
                         </div>
                     ))}
-                    {equationsData.map((dataPerRider) => (
-                        dataPerRider.map((equation, index) => (
-                            <div key={index} className="mt-2">
-                            <InlineMath math={equation}/>
-                        </div>
-                        ))
-
-                    ))}
+                   <ShowEquations equationsData={equationsData.flat()}/>
+                    <div>
+                        {serverResponse && (
+                            <div>
+                                <h3>Solution Steps:</h3>
+                                <SolutionSteps serverResponse={serverResponse} />
+                            </div>
+                        )}
+                    </div>
                 </div>
-            )}
+
+            )
+
+            }
+
         </div>
+        </>
     );
 };
 
