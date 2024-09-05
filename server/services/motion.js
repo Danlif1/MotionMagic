@@ -32,9 +32,9 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             _riders.push(_rider)
         }
         let _ridersData = new Map();
-        for (const [key, value] of riderData) {
+        for (const [key, value] of Object.entries(riderData)) {
             let data = []
-            for (let rider in value) {
+            for (const rider of value) {
                 let single_data = await new RiderData({
                     Path: rider["path"],
                     Time: rider["time"],
