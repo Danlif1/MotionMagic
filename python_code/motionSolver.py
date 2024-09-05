@@ -220,9 +220,11 @@ def motion_solver(equations):
         if compare_solutions(solution, final_solution):
             return [path, str(solution)]
         else:
-            return [f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}", str(solution)]
+            return [[f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"],
+                    str(solution)]
     except:
-        return [f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}", str(solution)]
+        return [[f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"],
+                str(solution)]
 
 
 
