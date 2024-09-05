@@ -32,7 +32,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             _riders.push(_rider);
         }
 
-        let _ridersData = new Map();
+        const _ridersData = new Map();
         for (const [key, value] of Object.entries(riderData)) {
             let data = [];
             for (const rider of value) {
@@ -56,7 +56,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             CreatorProfilePic: creator.ProfilePicture,
             Paths: paths,
             Riders: _riders,
-            RiderData: _ridersData,
+            RidersData: _ridersData,
             Likes: [],
             Viewers: [],
             Comments: [],
