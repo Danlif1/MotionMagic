@@ -40,14 +40,14 @@ async function likeProblem(problemID, username) {
         // Remove like
         problem.Likes.filter(u => u !== username);
         await problem.save();
-        user.starredProblems.filter(p => p.ID !== problemID);
+        user.LikedProblems.filter(p => p.ID !== problemID);
         await user.save();
         await saveProblemToAll(problemID, problem);
         return "Removed like";
     } else {
         problem.Likes.push(username);
         await problem.save();
-        user.starredProblems.push(problem);
+        user.LikedProblems.push(problem);
         await user.save();
         await saveProblemToAll(problemID, problem);
     }

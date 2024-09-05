@@ -73,14 +73,14 @@ async function getMyProblems(username) {
     return user.Problems;
 }
 
-async function getStarredProblems(username) {
+async function getLikedProblems(username) {
     let user = await User.findOne({ Username: username });
     if (!user) {
         logErrorToFile("Fake user: " + username + " tried accessing his problems");
         return null;
     }
     logActionToFile("User: " + username + " accessed his problems");
-    return user.starredProblems;
+    return user.LikedProblems;
 }
 
 async function deleteProblem(username, problemID) {
@@ -93,8 +93,8 @@ async function deleteProblem(username, problemID) {
     user.Problems = user.Problems.filter(p => p.ID !== problemID);
     await user.save();
     await User.updateMany(
-        { 'starredProblems.ID': problemID },
-        { $pull: { starredProblems: { ID: problemID } } }
+        { 'LikedProblems.ID': problemID },
+        { $pull: { LikedProblems: { ID: problemID } } }
     );
     return [200, "Problem deleted successfully"];
 }
@@ -102,6 +102,6 @@ async function deleteProblem(username, problemID) {
 module.exports = {
     solveProblem,
     getMyProblems,
-    getStarredProblems,
+    getLikedProblems,
     deleteProblem
 };

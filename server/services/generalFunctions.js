@@ -9,7 +9,7 @@ async function saveProblemToAll(problemID, newProblem) {
             foundProblem = newProblem;
         }
 
-        foundProblem = user.starredProblems.find(problem => problem.ID === problemID);
+        foundProblem = user.LikedProblems.find(problem => problem.ID === problemID);
         if (foundProblem) {
             foundProblem = newProblem;
         }

@@ -128,7 +128,7 @@ const UserSchema = new Schema({
         type: ProblemSchema,
         nullable: true
     }],
-    starredProblems: [{
+    LikedProblems: [{
         type: ProblemSchema,
         nullable: true
     }]
