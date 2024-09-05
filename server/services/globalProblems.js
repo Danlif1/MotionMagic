@@ -56,9 +56,9 @@ async function likeProblem(problemID, username) {
     }
     if (problem.Likes.includes(user.Username)) {
         // Remove like
-        problem.Likes.filter(u => u !== user.Username);
+        problem.Likes = problem.Likes.filter(u => u !== user.Username);
         await problem.save();
-        user.LikedProblems.filter(p => p.ID !== problemID);
+        user.LikedProblems = user.LikedProblems.filter(p => p.ID !== problemID);
         await user.save();
         await saveProblemToAll(problemID, problem);
         return "Removed like";
