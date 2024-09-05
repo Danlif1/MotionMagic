@@ -18,10 +18,10 @@ async function myProblems(req, res) {
     res.status(200).json({ message: 'Success', problems: problems });
 }
 
-async function starredProblems(req, res) {
-    const problems = await problemService.getStarredProblems(req.user.username);
+async function likedProblems(req, res) {
+    const problems = await problemService.getLikedProblems(req.user.username);
     if (!problems) {
-        return res.status(404).json({ error: 'Error couldn\'t find starred problems' });
+        return res.status(404).json({ error: 'Error couldn\'t find liked problems' });
     }
     res.status(200).json({ message: 'Success', problems: problems });
 
@@ -35,6 +35,6 @@ async function deleteProblem(req, res) {
 module.exports = {
     solveProblem,
     myProblems,
-    starredProblems,
+    likedProblems,
     deleteProblem
 };

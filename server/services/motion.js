@@ -8,6 +8,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
     if (!equations || !paths || !riders || !riderData) {
         return null;
     }
+    riderData = JSON.parse(riderData)
     isPublic = isPublic === "true";
     let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
@@ -49,7 +50,8 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             ID: newID,
             Equations: equations,
             Solution: result,
-            Creator: username,
+            Creator: creator.DisplayName,
+            CreatorProfilePic: creator.ProfilePicture,
             Paths: paths,
             Riders: _riders,
             RiderData: _ridersData,
@@ -74,14 +76,14 @@ async function getMyProblems(username) {
     return user.Problems;
 }
 
-async function getStarredProblems(username) {
+async function getLikedProblems(username) {
     let user = await User.findOne({ Username: username });
     if (!user) {
         logErrorToFile("Fake user: " + username + " tried accessing his problems");
         return null;
     }
     logActionToFile("User: " + username + " accessed his problems");
-    return user.starredProblems;
+    return user.LikedProblems;
 }
 
 async function deleteProblem(username, problemID) {
@@ -90,12 +92,12 @@ async function deleteProblem(username, problemID) {
     if (problem.Creator !== username) {
         return [403, "You are not the creator"];
     }
-    let _problem = await Problem.findOneAndDelete({ ID: problemID });
+    await Problem.findOneAndDelete({ ID: problemID });
     user.Problems = user.Problems.filter(p => p.ID !== problemID);
     await user.save();
     await User.updateMany(
-        { 'starredProblems.ID': problemID },
-        { $pull: { starredProblems: { ID: problemID } } }
+        { 'LikedProblems.ID': problemID },
+        { $pull: { LikedProblems: { ID: problemID } } }
     );
     return [200, "Problem deleted successfully"];
 }
@@ -103,6 +105,6 @@ async function deleteProblem(username, problemID) {
 module.exports = {
     solveProblem,
     getMyProblems,
-    getStarredProblems,
+    getLikedProblems,
     deleteProblem
 };

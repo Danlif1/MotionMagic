@@ -37,7 +37,8 @@ async function registerUser(username, displayName, password, profilePicture) {
         DisplayName: displayName,
         ProfilePicture: profilePicture,
         Problems: [],
-        starredProblems: []
+        LikedProblems: [],
+        Drafts: []
     });
     await newUser.save();
     return true;

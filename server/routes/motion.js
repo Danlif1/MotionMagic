@@ -31,7 +31,7 @@ router.post("/api/solve", authenticateToken, problemController.solveProblem);
 router.get("/api/myProblems", authenticateToken, problemController.myProblems);
 
 /**
- * This is get all starred problems request. (star and like are currently the same thing)
+ * This is get all liked problems request. (star and like are currently the same thing)
  * No body.
  * The result will be a list of problems with the structure:
  * ID: {type: String},
@@ -42,7 +42,7 @@ router.get("/api/myProblems", authenticateToken, problemController.myProblems);
  * Likes: [{type: String}],
  * Views: {type: Number}
  */
-router.get("/api/starredProblems", authenticateToken, problemController.starredProblems);
+router.get("/api/likedProblems", authenticateToken, problemController.likedProblems);
 
 /**
  * This is the delete problem request.
