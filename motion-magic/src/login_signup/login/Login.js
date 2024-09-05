@@ -6,6 +6,7 @@ import {useState} from "react";
 
 
 import {name_picture} from '../../main-pages/Home'
+import TypeWriter from "typewriter-effect";
 //import {socket} from "../../App";
 
 export var token;
@@ -75,53 +76,74 @@ function Login({setLoggedIn}) {
             setError(true);
 
         }
-        return (
-            <>
-                <title>Login</title>
-                <link href="../login_signup.css" rel="stylesheet"/>
-                <div className="back-box"/>
-                <div className="card login-box">
-                    <div className="card-body">
-                        <Form className="" onSubmit={checkForUser}>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="InputUsername1">Username</Form.Label>
-                                <Form.Group className="input-group">
-                                    <div className="input-group-text">@</div>
-                                    <Form.Control
-                                        type="text"
-                                        className="form-control"
-                                        id="InputUsername1"
-                                        placeholder="Enter Username"
-                                        name='username'
-                                    />
-                                </Form.Group>
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label htmlFor="InputPassword1">Password</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    className="form-control"
-                                    id="InputPassword1"
-                                    placeholder="Enter password"
-                                    name='password'
-                                />
-                            </Form.Group>
-                            <Button type="submit" className="btn btn-primary">
-                                Login
-                            </Button>
-                            {error && (
-                                <div className='text-danger'>
-                                    Username or password is incorrect.
-                                </div>
-                            )}
-                            <span className="sign-box">
-                            Not registered? <Link to="/">Sign up here</Link>
-                        </span>
-                        </Form>
+    return (
+        <>
+            <div className="navbar-custom"> {/* Gray navigation bar */}
+            <div className="container-fluid">
+                <div className="row row1" style={{ height: '100vh' }}>
+                    {/* Left side - Login form (40% width) */}
+                    <div className="col-4 d-flex justify-content-end align-items-center left-section1">
+                        <div className="card card1 w-100">
+                            <div className="card-body">
+                                <h1 className="text-center">Login</h1>
+                                <Form onSubmit={checkForUser}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label htmlFor="InputUsername1">Username</Form.Label>
+                                        <Form.Group className="input-group">
+                                            <div className="input-group-text">@</div>
+                                            <Form.Control
+                                                type="text"
+                                                className="form-control"
+                                                id="InputUsername1"
+                                                placeholder="Enter Username"
+                                                name='username'
+                                            />
+                                        </Form.Group>
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label htmlFor="InputPassword1">Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            className="form-control"
+                                            id="InputPassword1"
+                                            placeholder="Enter password"
+                                            name='password'
+                                        />
+                                    </Form.Group>
+                                    <Button type="submit" variant="primary">
+                                        Login
+                                    </Button>
+                                    {error && (
+                                        <div className='text-danger'>
+                                            Username or password is incorrect.
+                                        </div>
+                                    )}
+                                    <span className="sign-box" style={{marginLeft:'5px'}}>
+                                        Not registered? <Link to="/">Sign up here</Link>
+                                    </span>
+                                </Form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right side - Logo (60% width) */}
+                    <div className="col-8 d-flex justify-content-start align-items-center right-section1">
+                        <h2 className="text-container1">
+                            <TypeWriter options={{
+                                strings: [
+                                    "Motion Magic is the best tool to use for solving Motion Problems - Danie Assa",
+                                    "Discover amazing features",
+                                    "Join our community today!",
+                                    "Explore new opportunities",
+                                ], autoStart: true, loop: true
+                            }}/></h2>
+                        <img src="/logo.png" alt="Logo" className="img-fluid1 logo1"/>
                     </div>
                 </div>
-            </>
-        );
-    }
+            </div>
+            </div>
+        </>
+    );
+}
 
-    export default Login;
+export default Login;

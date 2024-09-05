@@ -1,9 +1,11 @@
-import '../login_signup.css'
+import styles from '../login_signup.css'
 import {Link, useNavigate} from 'react-router-dom'
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button"
 import {useState} from "react";
 import InputField from './InputField.js'
+import {Container, Navbar} from "react-bootstrap";
+import TypeWriter from "typewriter-effect";
 
 function Signup() {
     const [errors, setErrors] = useState({
@@ -271,59 +273,71 @@ function Signup() {
     //{label,name,id,errors,type,placeholder, checker}
 
     return (
-        <>
-            <title>Sign up</title>
-            <link href="../login_signup.css" rel="stylesheet"/>
-            <div className="back-box"/>
-            <div className="card login-box">
-                <div className="card-body">
-                    <Form className="" onSubmit={handleSubmit}>
-                        <InputField label='Username' type='text' id='InputUsername2' placeholder='Enter username'
-                                    name='username' checker={changeFromEmpty} errors={errors}/>
-                        <InputField label='Password' type='password' id='InputPassword1' placeholder='Enter password'
-                                    name='password1'  checker = {checkPassword} errors = {errors} addValid={true}/>
-                        <InputField label='Verify password' type='password' id='InputPassword2' placeholder='Enter password again'
-                                    name='password2' checker={changeFromEmpty} errors={errors} />
-                        <InputField label='Display name' type='text' aria='DisplayNameHelp' placeholder='Enter display name'
-                                    name='displayname' checker={changeFromEmpty} errors={errors}
-                                    ariatext='This is the name you will appear by.' />
-                        {/*no component here, because of the logic*/}
-                        <Form.Group className="mb-3">
-                            <Form.Label className="form-label">
-                                Picture
-                            </Form.Label>
-                            <Form.Control className="form-control" type="file" id="formFile"
-                                          onChange={showPic} name="image" accept="image/*"
-                            />
-                            {pic === '' &&
-                                <div id="formFile" className="form-text text-muted">
-                                    If no profile picture is provided a default picture will be used.
-                                </div>}
-                        </Form.Group>
-                        <div className="img-cont">
-                            <img
-                                src={pic}
-                                id="Profile-Picture"
-                                alt="Profile Picture"
-                            />
+        <div className="navbar-custom"> {/*Because solve.css puts padding on body,
+         navbar-custom allows us to start from the top like a nav bar*/}
+
+            <div className="container-fluid1">
+                <div className="row row1" style={{ height: '100vh' }}>
+                    {/* Left side - Sign up form (40% width) */}
+                    <div className="col-4 d-flex justify-content-end align-items-center left-section1">
+                        <div className="card card1 w-100">
+                            <div className="card-body">
+                                <h1 className="text-center">Sign Up</h1>
+                                <Form onSubmit={handleSubmit}>
+                                    <InputField label='Username' type='text' id='InputUsername2' placeholder='Enter username'
+                                                name='username' checker={changeFromEmpty} errors={errors}/>
+                                    <InputField label='Password' type='password' id='InputPassword1' placeholder='Enter password'
+                                                name='password1' checker={checkPassword} errors={errors} addValid={true}/>
+                                    <InputField label='Verify password' type='password' id='InputPassword2' placeholder='Enter password again'
+                                                name='password2' checker={changeFromEmpty} errors={errors} />
+                                    <InputField label='Display name' type='text' aria='DisplayNameHelp' placeholder='Enter display name'
+                                                name='displayname' checker={changeFromEmpty} errors={errors}
+                                                ariatext='This is the name you will appear by.' />
+                                    <Form.Group className="mb-3">
+                                        <Form.Label className="form-label">
+                                            Picture
+                                        </Form.Label>
+                                        <Form.Control className="form-control" type="file" id="formFile"
+                                                      onChange={showPic} name="image" accept="image/*"
+                                        />
+                                        {pic === '' &&
+                                            <div id="formFile" className="form-text text-muted">
+                                                If no profile picture is provided a default picture will be used.
+                                            </div>}
+                                    </Form.Group>
+                                    <div className="img-cont1">
+                                        <img
+                                            src={pic}
+                                            id="Profile-Picture"
+                                            alt="Profile Picture"
+                                        />
+                                    </div>
+                                    <br/>
+                                    <Button type="submit" variant="primary">
+                                        Register
+                                    </Button>
+                                    <span className="sign-box" style={{marginLeft:'5px'}}>
+                                    Already registered? <Link to="/login">Click here</Link> to login
+                                </span>
+                                </Form>
+                            </div>
                         </div>
-                        <br/>
-                        {/*need to make it link to chat*/}
-                        {/*<Button type="submit" className="btn btn-primary">*/}
-                        {/*    Register*/}
-                        {/*</Button>*/}
-                        <Button type="submit" variant="primary">
-                            Register
-                        </Button>
-                        <span className="sign-box">
-          Already registered? <Link to="/login">Click here</Link> to
-          login
-        </span>
-                    </Form>
+                    </div>
+
+                    {/* Right side - Logo (60% width) */}
+                    <div className="col-8 d-flex flex-column justify-content-start align-items-center right-section1">
+                        <h2 className="text-container1">
+                        <TypeWriter  options={{strings:[
+                                "Motion Magic is the best tool to use for solving Motion Problems - Daniel Assa",
+                                "Discover amazing features",
+                                "Join our community today",
+                                "Explore new opportunities",
+                            ], autoStart:true, loop:true}} /></h2>
+                        <img src="/logo.png" alt="Logo" className="img-fluid1 logo1"/>
+                    </div>
                 </div>
             </div>
-        </>
-
+        </div>
     );
 }
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SolutionSteps from './SolutionSteps'; // Assuming you have this for rendering the solution
 import ShowEquations from './ShowEquations'; // Assuming you have this for rendering equations
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
     faThumbsUp,
     faStar,
@@ -17,30 +17,35 @@ import axios from "axios";
 import {token} from "../login_signup/login/Login"; // Add your custom CSS
 import {name_picture} from "./Home";
 import FullSolution from "./FullSolution";
-const GlobalSolution = ({ problem,pid }) => {
+
+const GlobalSolution = ({problem, pid}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [likes,setLikes] = useState(problem.Likes);
+    const [liked, setLiked] = useState(problem.Likes.includes(name_picture.userName));
     const toggleOpen = () => {
         setIsOpen(!isOpen);
     };
-    useEffect(()=> {
+    useEffect(() => {
         setLikes(problem.Likes);
-    },[problem])
+        setLiked(problem.Likes.includes(name_picture.userName))
+    }, [problem])
     const toggleLike = async () => {
         try {
             const response = await axios.put(`http://localhost:5000/api/problem/${pid}/like`,
                 {}, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
 
             if (response.status === 200) {
                 const message = response.data.message;
                 if (message === 'Liked problem') {
                     setLikes([...likes, name_picture.userName]); // Add like
+                    setLiked(true)
                 } else if (message === 'Removed like') {
                     setLikes(likes.filter(user => user !== name_picture.userName)); // Remove like
+                    setLiked(false)
                 }
             }
         } catch (error) {
@@ -51,7 +56,7 @@ const GlobalSolution = ({ problem,pid }) => {
 
     return (
         <div className="container mb-3">
-            <div className="card" style={{ minWidth: '1000px' }}>
+            <div className="card" style={{minWidth: '1000px'}}>
                 <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
                         {/* Creator and Time */}
@@ -67,8 +72,9 @@ const GlobalSolution = ({ problem,pid }) => {
                             {/*{displayName}*/}
                             {/*    </span>*/}
                             <div style={{display: 'flex', flexDirection: 'column', marginLeft: '10px'}}>
-                                <span>DisplayName</span>
-                                <small style={{color: 'gray', marginTop: '-5px'}} className="creator-name">@{problem.Creator}</small>
+                                <span>{problem.Creator}</span>
+                                <small style={{color: 'gray', marginTop: '-5px'}}
+                                       className="creator-name">@{problem.CreatorUsername}</small>
                             </div>
                             {/*<span className="creator-name">{problem.Creator} </span>*/}
                             <span className="timestamp ml-3" style={{marginLeft: '10px'}}>{formattedDate}</span>
@@ -94,8 +100,8 @@ const GlobalSolution = ({ problem,pid }) => {
                 <div className="card-footer d-flex justify-content-between align-items-center">
 
                     <div className="d-flex align-items-center">
-                        <button className="icon-button heart-button" onClick={toggleLike}>
-                            {likes.includes(name_picture.userName) ? (
+                        <button className={`icon-button heart-button`} onClick={toggleLike}>
+                            {liked ? (
                                 <FontAwesomeIcon icon={faHeart} style={{color: "#fc7373"}}/>
                             ) : (
                                 <FontAwesomeIcon icon={faHeart}/>
