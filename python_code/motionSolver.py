@@ -3,8 +3,29 @@ import json
 import numpy as np
 import sympy as sp
 
+def converMatrixToEquation(row, variables):
+    equation_parts = []
+    n = len(variables)  # Number of variables
 
-def row_reduce(matrix, default_equations):
+    for i in range(n):
+        coef = row[i]
+        if coef != 0:
+            if coef == 1:
+                equation_parts.append(f"{variables[i]}")
+            elif coef == -1:
+                equation_parts.append(f"-{variables[i]}")
+            else:
+                equation_parts.append(f"{coef}{variables[i]}")
+
+    rhs = row[-1]
+
+    equation_lhs = " + ".join(equation_parts).replace("+ -", "- ")
+    equation = f"{equation_lhs} = {rhs}"
+
+    return equation
+
+
+def row_reduce(matrix, default_equations, string_variables):
     m, n = matrix.shape
     reduced_matrix = np.copy(matrix)
     path = []
@@ -25,8 +46,10 @@ def row_reduce(matrix, default_equations):
         reduced_matrix[[r, i]] = reduced_matrix[[i, r]]
         if reduced_matrix[r, lead] != 0:
             if r != i:
-                path.append(f"We will denote the equation: {reduced_matrix[r]} as equation {r + 1}\n"
-                            f"and denote the equation: {reduced_matrix[i]} as equation {i + 1}")
+                equationR = converMatrixToEquation(reduced_matrix[r], string_variables)
+                equationI = converMatrixToEquation(reduced_matrix[i], string_variables)
+                path.append(f"We will denote the equation: {equationR} as equation {r + 1}\n"
+                            f"and denote the equation: {equationI} as equation {i + 1}")
 
         lv = reduced_matrix[r, lead]
         reduced_matrix[r] = reduced_matrix[r] / lv
@@ -39,7 +62,6 @@ def row_reduce(matrix, default_equations):
                 reduced_matrix[i] -= lv * reduced_matrix[r]
                 if lv != 0:
                     path.append(f"Subtract equation {r + 1} from equation {i + 1} {lv} times")
-                    # path.append(f"We will get that equation {i + 1} now equal {current_equation}")
         lead += 1
 
     return reduced_matrix, path
@@ -76,12 +98,10 @@ def equations_to_matrix_equation(equation_list, variables):
         lhs = lhs.strip()
         rhs = rhs.strip()
 
-        # Parse left-hand side
         expr_lhs = sympify(lhs)
         for j, var in enumerate(variables):
             coefficient_matrix[i, j] = expr_lhs.coeff(var)
 
-        # Parse right-hand side
         expr_rhs = sympify(rhs)
         if expr_rhs.is_number:
             constant_vector[i, 0] = expr_rhs
@@ -95,7 +115,6 @@ def equations_to_matrix_equation(equation_list, variables):
                 else:
                     constant_vector[i, 0] += -coef * var
 
-    # Combine coefficient matrix and constant vector
     matrix_equation = np.hstack((coefficient_matrix, constant_vector))
     return matrix_equation
 
@@ -112,7 +131,7 @@ def extract_solution(reduced_matrix, variables):
         if leading_row is not None:
             solution[variables[col]] = reduced_matrix[leading_row, -1]
         else:
-            solution[str(col)] = None  # Free variable, can be assigned arbitrary value
+            solution[str(col)] = None
     return solution
 
 
@@ -122,26 +141,20 @@ def rearrange_equations(unsimplified_equations):
     for eq in unsimplified_equations:
         lhs, rhs = eq.split('=')
 
-        # Convert strings to sympy expressions
         lhs_expr = sp.sympify(lhs)
         rhs_expr = sp.sympify(rhs)
 
-        # Move all terms to the left-hand side
         full_expr = lhs_expr - rhs_expr
 
-        # Simplify the expression
         simplified_expr = sp.simplify(full_expr)
 
-        # Extract the variables and constants separately
         variables = simplified_expr.as_ordered_terms()
         const = sum(term for term in variables if term.is_constant())
         variables = [term for term in variables if not term.is_constant()]
 
-        # Combine variables and constants appropriately
         left_side = sum(variables)
         right_side = -const
 
-        # Form the final rearranged equation
         print(f"{left_side} = {right_side}")
         final_eq = f"{left_side} = {right_side}"
         rearranged_eqs.append(final_eq)
@@ -159,9 +172,9 @@ def motion_solver(equations):
     for eq in equations:
         starting_string += eq
         starting_string += "\n"
-    variables, _ = reformat_equations(equations)
+    variables, string_variables = reformat_equations(equations)
     matrix1 = equations_to_matrix_equation(equations, variables)
-    reduced_matrix, path = row_reduce(matrix1, equations)
+    reduced_matrix, path = row_reduce(matrix1, equations, string_variables)
     path.insert(0, starting_string)
     for step in path:
         print(step)
@@ -171,4 +184,4 @@ def motion_solver(equations):
     return path
 
 
-print(motion_solver(["x+y+z=3", "y+z=3", "y=1"]))
+print(motion_solver(["x+z=5", "2*z-3*x=0", "2*y+x=4"]))
