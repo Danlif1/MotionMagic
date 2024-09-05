@@ -49,7 +49,8 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             ID: newID,
             Equations: equations,
             Solution: result,
-            Creator: username,
+            Creator: creator.DisplayName,
+            CreatorProfilePic: creator.ProfilePicture,
             Paths: paths,
             Riders: _riders,
             RiderData: _ridersData,
@@ -90,7 +91,7 @@ async function deleteProblem(username, problemID) {
     if (problem.Creator !== username) {
         return [403, "You are not the creator"];
     }
-    let _problem = await Problem.findOneAndDelete({ ID: problemID });
+    await Problem.findOneAndDelete({ ID: problemID });
     user.Problems = user.Problems.filter(p => p.ID !== problemID);
     await user.save();
     await User.updateMany(

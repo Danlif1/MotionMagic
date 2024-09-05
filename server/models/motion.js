@@ -60,6 +60,10 @@ const ProblemSchema = new Schema({
         type: String,
         required: true
     },
+    CreatorProfilePic: {
+        type: String,
+        nullable: true
+    },
     Time: {
         type: Date,
         default: Date.now()
