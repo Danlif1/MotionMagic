@@ -22,30 +22,30 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
                 break;
             }
         }
-        let _riders = []
-        for (let rider in riders) {
+        let _riders = [];
+        for (let rider of riders) {
             let _rider = await new Rider({
-                Name: rider["name"],
-                Paths: rider["paths"]
-            })
-            await _rider.save()
-            _riders.push(_rider)
+                Name: rider.name,
+                Paths: rider.paths
+            });
+            await _rider.save();
+            _riders.push(_rider);
         }
 
         let _ridersData = new Map();
         for (const [key, value] of Object.entries(riderData)) {
-            let data = []
+            let data = [];
             for (const rider of value) {
                 let single_data = await new RiderData({
-                    Path: rider["path"],
-                    Time: rider["time"],
-                    Velocity: rider["velocity"],
-                    Distance: rider["distance"]
+                    Path: rider.path,
+                    Time: rider.time,
+                    Velocity: rider.velocity,
+                    Distance: rider.distance
                 });
-                await single_data.save()
-                data.push(single_data)
+                await single_data.save();
+                data.push(single_data);
             }
-            _ridersData[key] = data
+            _ridersData.set(key, data);
         }
         const problem = await new Problem({
             ID: newID,
