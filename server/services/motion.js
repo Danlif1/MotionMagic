@@ -8,6 +8,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
     if (!equations || !paths || !riders || !riderData) {
         return null;
     }
+    riderData = JSON.parse(riderData)
     isPublic = isPublic === "true";
     let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
