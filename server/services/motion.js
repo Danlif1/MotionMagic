@@ -8,7 +8,6 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
     if (!equations || !paths || !riders || !riderData) {
         return null;
     }
-    riderData = JSON.parse(riderData)
     isPublic = isPublic === "true";
     let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
@@ -29,10 +28,11 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
                 Name: rider["name"],
                 Paths: rider["paths"]
             })
+            await _rider.save()
             _riders.push(_rider)
         }
+
         let _ridersData = new Map();
-        console.log(riderData)
         for (const [key, value] of Object.entries(riderData)) {
             let data = []
             for (const rider of value) {
@@ -42,6 +42,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
                     Velocity: rider["velocity"],
                     Distance: rider["distance"]
                 });
+                await single_data.save()
                 data.push(single_data)
             }
             _ridersData[key] = data
