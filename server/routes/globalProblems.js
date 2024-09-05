@@ -32,7 +32,7 @@ router.get('/api/viewProblems/mostLikes/:nop', viewController.byMostLikes);
  * Likes: [{type: String}],
  * Views: {type: Number}
  */
-router.get('/api/viewProblems/newest/:nop', viewController.byTime);
+router.get('/api/viewProblems/newest', viewController.byTime);
 
 /**
  * This is the like problem request. (It will toggle on and off the like)

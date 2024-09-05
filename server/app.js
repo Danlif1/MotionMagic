@@ -55,9 +55,10 @@ const registerRoutes = require('./routes/register');
 const motionRoutes = require('./routes/motion');
 const globalRoutes = require('./routes/globalProblems');
 
-app.use('/', registerRoutes); // Mount the register routes on the root path
 app.use('/', motionRoutes); // Mount the problem routes on the root path
 app.use('/', globalRoutes); // Mount the global routes on the root path
+app.use('/', registerRoutes); // Mount the register routes on the root path
+
 
 // Start the server
 app.listen(process.env.PORT_MONGO, () => { // Start the server and listen on port process.env.PORT
