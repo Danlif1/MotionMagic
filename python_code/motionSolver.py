@@ -57,7 +57,7 @@ def row_reduce(matrix, default_equations, string_variables):
     reduced_matrix = np.copy(matrix)
     path = []
     for i in range(m):
-        path.append(f"We will denote the equation: {default_equations[i]} as equation {i + 1}")
+        path.append(f"We will denote the equation: ${default_equations[i]}$ as equation ${i + 1}$")
     lead = 0
     for r in range(m):
         if lead >= n:
@@ -75,20 +75,20 @@ def row_reduce(matrix, default_equations, string_variables):
             if r != i:
                 equationR = convert_matrix_to_equation(reduced_matrix[r], string_variables)
                 equationI = convert_matrix_to_equation(reduced_matrix[i], string_variables)
-                path.append(f"We will denote the equation: {equationR} as equation {r + 1}\n"
-                            f"and denote the equation: {equationI} as equation {i + 1}")
+                path.append(f"We will denote the equation: ${equationR}$ as equation ${r + 1}$\n"
+                            f"and denote the equation: ${equationI}$ as equation ${i + 1}$")
 
         lv = reduced_matrix[r, lead]
         reduced_matrix[r] = reduced_matrix[r] / lv
         if not (lv == 1):
-            path.append(f"We will divide equation {r + 1} by {lv}")
+            path.append(f"We will divide equation ${r + 1}$ by ${lv}$")
 
         for i in range(m):
             if i != r:
                 lv = reduced_matrix[i, lead]
                 reduced_matrix[i] -= lv * reduced_matrix[r]
                 if lv != 0:
-                    path.append(f"Subtract equation {r + 1} from equation {i + 1} {lv} times")
+                    path.append(f"Subtract equation ${r + 1}$ from equation ${i + 1}$ ${lv}$ times")
         lead += 1
 
     return reduced_matrix, path
@@ -196,12 +196,12 @@ def motion_solver(equations):
     try:
         starting_string = "We will rearrange the equations:\n"
         for eq in equations:
-            starting_string += eq
+            starting_string += "$" + eq + "$"
             starting_string += "\n"
         starting_string += "To the equations:\n"
         equations = rearrange_equations(equations)
         for eq in equations:
-            starting_string += eq
+            starting_string += "$" + eq + "$"
             starting_string += "\n"
         variables, string_variables = reformat_equations(equations)
         matrix1 = equations_to_matrix_equation(equations, variables)
@@ -225,4 +225,4 @@ def motion_solver(equations):
         return f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"
 
 
-print(motion_solver(["x+z**2=5", "2*z-3*x=0", "2*y+x=4"]))
+print(motion_solver(["3*x=5", "2*x-2*y=0"]))
