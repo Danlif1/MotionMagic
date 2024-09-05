@@ -3,7 +3,34 @@ import json
 import numpy as np
 import sympy as sp
 
-def converMatrixToEquation(row, variables):
+
+def compare_solutions(final_solution, solution):
+    # Convert all values in final_solution and solution to floats for comparison
+    final_solution_float = {k: float(v) for k, v in final_solution.items()}
+    solution_float = {k: float(v) for k, v in solution.items()}
+
+    return final_solution_float == solution_float
+
+
+def solve_non_linear(equations):
+    variables = set()
+    for eq in equations:
+        sides = eq.split('=')
+        for side in sides:
+            expr = sympify(side)
+            variables.update(expr.free_symbols)
+
+    sympy_equations = []
+    for eq_str in equations:
+        lhs, rhs = eq_str.split('=')
+        sympy_equations.append(Eq(sympify(lhs.strip()), sympify(rhs.strip())))
+
+    solutions = solve(sympy_equations, *variables)
+
+    return solutions
+
+
+def convert_matrix_to_equation(row, variables):
     equation_parts = []
     n = len(variables)  # Number of variables
 
@@ -46,8 +73,8 @@ def row_reduce(matrix, default_equations, string_variables):
         reduced_matrix[[r, i]] = reduced_matrix[[i, r]]
         if reduced_matrix[r, lead] != 0:
             if r != i:
-                equationR = converMatrixToEquation(reduced_matrix[r], string_variables)
-                equationI = converMatrixToEquation(reduced_matrix[i], string_variables)
+                equationR = convert_matrix_to_equation(reduced_matrix[r], string_variables)
+                equationI = convert_matrix_to_equation(reduced_matrix[i], string_variables)
                 path.append(f"We will denote the equation: {equationR} as equation {r + 1}\n"
                             f"and denote the equation: {equationI} as equation {i + 1}")
 
@@ -163,25 +190,39 @@ def rearrange_equations(unsimplified_equations):
 
 
 def motion_solver(equations):
-    starting_string = "We will rearrange the equations:\n"
-    for eq in equations:
-        starting_string += eq
-        starting_string += "\n"
-    starting_string += "To the equations:\n"
-    equations = rearrange_equations(equations)
-    for eq in equations:
-        starting_string += eq
-        starting_string += "\n"
-    variables, string_variables = reformat_equations(equations)
-    matrix1 = equations_to_matrix_equation(equations, variables)
-    reduced_matrix, path = row_reduce(matrix1, equations, string_variables)
-    path.insert(0, starting_string)
-    for step in path:
-        print(step)
+    path = []
+    solution = solve_non_linear(equations)
+    final_solution = {}
+    try:
+        starting_string = "We will rearrange the equations:\n"
+        for eq in equations:
+            starting_string += eq
+            starting_string += "\n"
+        starting_string += "To the equations:\n"
+        equations = rearrange_equations(equations)
+        for eq in equations:
+            starting_string += eq
+            starting_string += "\n"
+        variables, string_variables = reformat_equations(equations)
+        matrix1 = equations_to_matrix_equation(equations, variables)
+        reduced_matrix, path = row_reduce(matrix1, equations, string_variables)
+        path.insert(0, starting_string)
+        for step in path:
+            print(step)
 
-    final_solution = extract_solution(reduced_matrix, variables)
-    path.append(f"We get that the solution is: {final_solution}")
-    return path
+        final_solution = extract_solution(reduced_matrix, variables)
+        path.append(f"We get that the solution is: {final_solution}")
+    except:
+        solution = solve_non_linear(equations)
+        return f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"
+
+    try:
+        if compare_solutions(solution, final_solution):
+            return path
+        else:
+            return f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"
+    except:
+        return f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"
 
 
-print(motion_solver(["x+z=5", "2*z-3*x=0", "2*y+x=4"]))
+print(motion_solver(["x+z**2=5", "2*z-3*x=0", "2*y+x=4"]))
