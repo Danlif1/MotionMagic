@@ -41,6 +41,9 @@ function Home({setLoggedIn}){
     function gotohistory(){
         navigate('/history',{replace:true});
     }
+    function gotoglobalsolutions(){
+        navigate('/global-solutions',{replace:true});
+    }
     let strToDisplay
     if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
         console.log("in if with: " + name_picture.profilePicture);
@@ -57,7 +60,7 @@ function Home({setLoggedIn}){
     return (
         <>
             <TopBar strToDisplay={strToDisplay} displayName={name_picture.displayname} gotohistory={gotohistory}
-                    gotosolve={gotosolve} signOut={signOut} username={name_picture.userName}/>
+                    gotosolve={gotosolve} signOut={signOut} username={name_picture.userName} gotoglobalsolutions={gotoglobalsolutions}/>
         <Container fluid>
                 <Container className="text-center" style={{marginTop: '20px'}}>
                     <h1>Hello, {name_picture.displayname}</h1>

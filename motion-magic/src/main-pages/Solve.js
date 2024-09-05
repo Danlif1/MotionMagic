@@ -33,6 +33,16 @@ const testParsing = (expression) => {
 
 testParsing('2 + 2');
 testParsing('2 + 2');
+let strToDisplay
+if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
+    console.log("in if with: " + name_picture.profilePicture);
+    strToDisplay=name_picture.profilePicture
+} else if (name_picture.userName!=="") {
+    console.log("in else with: " + name_picture.profilePicture);
+    strToDisplay = `data:image/jpeg;charset=utf-8;base64,${name_picture.profilePicture}`
+}else{
+    strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
+}
 const Solve = () => {
     const navigate = useNavigate();
     const [error, setError] = React.useState('');
@@ -46,17 +56,9 @@ const Solve = () => {
     const [finalRiderData,setFinalRiderData] = useState({});
     const [equationsData, setEquationsData] = useState([]);
     const [canSolve, setCanSolve] = useState(true);
-    const [serverResponse, setServerResponse] = useState(null);
-    let strToDisplay
-    if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
-        console.log("in if with: " + name_picture.profilePicture);
-        strToDisplay=name_picture.profilePicture
-    } else if (name_picture.userName!=="") {
-        console.log("in else with: " + name_picture.profilePicture);
-        strToDisplay = `data:image/jpeg;charset=utf-8;base64,${name_picture.profilePicture}`
-    }else{
-        strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
-    }
+    const [serverResponse, setServerResponse] = useState([]);
+
+
     function signOut() {
         navigate('/',{replace:true});
     }
@@ -66,8 +68,14 @@ const Solve = () => {
     function gotohistory(){
         navigate('/history',{replace:true});
     }
+    function gotoglobalsolutions(){
+        navigate('/global-solutions',{replace:true});
+    }
     useEffect(() => {
         if (Object.keys(finalRiderData).length > 0) {
+            console.log('paths: ',paths)
+            console.log('riders: ',riders)
+            console.log('riderData: ',riderData)
             setEquationsFromFinal();
 
         }
@@ -82,15 +90,20 @@ const Solve = () => {
     const sendSolveRequest = async () => {
         try {
             const response = await axios.post('http://localhost:5000/api/solve', {
-                equations: equationsData.flat()
+                equations: equationsData.flat(),
+                _paths:paths,
+                riders:riders,
+                riderData:riderData
             }, {
                 headers: {
                     'Authorization': `Bearer ${token}`, // Include authentication token
                     'Content-Type': 'application/json'
                 }
             });
-            setServerResponse(response.data['solution']); // Store the response
+            console.log('Server response sol:', response.data['solution'])
+            setServerResponse([response.data['solution']]); // Store the response
             console.log('Server response:', response.data); // Log the response for debugging
+            console.log('serverResponse is ',serverResponse)
         } catch (error) {
             console.error('Error sending solve request:', error);
             setError('Failed to solve equations. Please try again.');
@@ -321,8 +334,8 @@ const Solve = () => {
         }
         else if (!it && iv) {
             if(nv!==1)
-                return `${v}*${t}=${d}`
-            return `${t}=${d}`
+                return `${ev}*${et}=${d}`
+            return `${et}=${d}`
         }
         return `${nt*nv}=${d}`
     }
@@ -330,7 +343,7 @@ const Solve = () => {
     return (
         <>
         <TopBar strToDisplay={strToDisplay} displayName={name_picture.displayname} gotohistory={gotohistory}
-                gotosolve={gotosolve} signOut={signOut} username={name_picture.userName}/>
+                gotosolve={gotosolve} signOut={signOut} username={name_picture.userName} gotoglobalsolutions={gotoglobalsolutions}/>
         <div>
             <div style={{paddingTop: '3px'}}>
                 <span className="d-inline-block">
@@ -455,10 +468,12 @@ const Solve = () => {
                     ))}
                    <ShowEquations equationsData={equationsData.flat()}/>
                     <div>
-                        {serverResponse && (
+                        {solutionVisible && serverResponse.length>0  &&(
                             <div>
                                 <h3>Solution Steps:</h3>
-                                <SolutionSteps serverResponse={serverResponse} />
+                                {/*<p>{serverResponse}</p>*/}
+                                <SolutionSteps serverResponseSolution={serverResponse}/>
+
                             </div>
                         )}
                     </div>

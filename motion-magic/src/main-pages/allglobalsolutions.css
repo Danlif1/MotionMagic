@@ -1,0 +1,14 @@
+/* Ensure the content wrapper takes the full viewport height */
+.content-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header container for fixed header or top section */
+.header-container {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

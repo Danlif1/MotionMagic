@@ -1,0 +1,58 @@
+/* GlobalSolution component styles */
+.collapsed-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 4.5em; /* Two lines of text */
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.3s;
+}
+
+.icon-button:hover {
+    color: blue;
+}
+
+.creator-name {
+    font-weight: bold;
+}
+
+.timestamp {
+    font-size: 0.85rem;
+    color: gray;
+}
+
+.card-footer {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+
+.collapse-button {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+}
+.heart-button {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 0;
+
+}
+
+.heart-button:hover {
+    color: #fc7373;
+}

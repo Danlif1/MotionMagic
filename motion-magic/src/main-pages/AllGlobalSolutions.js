@@ -6,13 +6,13 @@ import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
 import {token} from '../login_signup/login/Login'
 import axios from 'axios';
-import MotionProblemCard from "./MotionProblemCard";
 import {Container, Nav, Navbar} from "react-bootstrap";
 import {name_picture} from "./Home";
 import TopBar from "./TopBar"; // Import axios for making HTTP requests
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
-import './history.css'
+import './allglobalsolutions.css'
+import GlobalSolution from "./GlobalSolution";
 let strToDisplay;
 if (name_picture.profilePicture === "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg") {
     console.log("in if with: " + name_picture.profilePicture);
@@ -23,7 +23,7 @@ if (name_picture.profilePicture === "https://images-na.ssl-images-amazon.com/ima
 } else {
     strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
 }
-const History = () => {
+const AllGlobalSolutions = () => {
     const [problems, setProblems] = useState([]);
     const navigate = useNavigate();
     const [error, setError] = useState('');
@@ -48,13 +48,13 @@ const History = () => {
     const fetchProblems = useCallback(async () => {
         console.log('Fetching Problems')
         try {
-            const response = await axios.get('http://localhost:5000/api/myProblems', {
+            const response = await axios.get('http://localhost:5000/api/viewProblems/newest/', {
                 headers: {
-                    Authorization: `Bearer ${token}` // Assuming token is imported and available
+                    Authorization: `Bearer ${token}`
                 }
             });
             if(response.status===200) {
-                setProblems(response.data['problems']);
+                setProblems(response.data);
                 console.log(response.data);
                 setError('')
             } else{
@@ -83,14 +83,14 @@ const History = () => {
                     gotosolve={gotosolve} signOut={signOut} username={name_picture.userName} gotoglobalsolutions={gotoglobalsolutions} />
             <div className="content-wrapper">
                 <div className="header-container">
-                    <h1 className="d-inline">Motion Problem History</h1>
+                    <h1 className="d-inline">Global Motion Problem Feed</h1>
                     <Button variant="light" href="#" className="mr-2 custom-button refresh-button" onClick={fetchProblems}>
                         <FontAwesomeIcon icon={faSync} />
                     </Button>
                 </div>
                 <div >
-                    {!error && problems.toReversed().map((problem) => (
-                        <MotionProblemCard key={problem.ID} pid={problem.ID} problem={problem} refresh={fetchProblems} />
+                    {!error && problems.map((problem) => (
+                        <GlobalSolution key={problem.ID} pid={problem.ID} problem={problem}  />
                     ))}
                     {error && (
                         <div className="alert alert-danger">
@@ -98,8 +98,8 @@ const History = () => {
                         </div>
                     )}
                     {problems.length === 0 && !error && (
-                        <div>
-                            <h3>No Motion Problem History!</h3>
+                        <div className="header-container" style={{marginLeft: "10px"}}>
+                            <h3 className="d-inline">No Motion Problems Anywhere! :(</h3>
                         </div>
                     )}
                 </div>
@@ -109,4 +109,4 @@ const History = () => {
         ;
 };
 
-export default History;
+export default AllGlobalSolutions;

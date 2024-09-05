@@ -1,18 +1,22 @@
 import React from "react";
+import 'katex/dist/katex.min.css';
+import { InlineMath } from 'react-katex';
+function do_nothing(a,b,c,d){
+    return null
+}
 
-
-const Table = ({riders, paths,riderData,onChangeFunction}) => {
+const Table = ({riders, paths,riderData,onChangeFunction=do_nothing, acceptChanges=false}) => {
     return (
         <div>
             {riders.map((rider, riderIndex) => (
                 <div key={riderIndex} className="mt-4">
-                    <h3 style={{margin: '10px'}}>{rider.name}'s Table</h3>
+                    <h5 style={{margin: '10px'}}>{rider.Name}'s Table</h5>
                     <div className="d-flex justify-content-center">
                         <div className="table-responsive w-75">
-                            <table className="table table-bordered text-center">
+                            <table className="table table-sm table-bordered text-center">
                                 <thead className="thead-dark">
                                 <tr>
-                                    <th>Path</th>
+                                    <th style={{ width: '10%' }}>Path</th>
                                     <th>Time</th>
                                     <th>Velocity</th>
                                     <th>Distance</th>
@@ -21,14 +25,15 @@ const Table = ({riders, paths,riderData,onChangeFunction}) => {
                                 <tbody>
                                 {paths.map((path, pathIndex) => (
                                     <tr key={pathIndex}>
-                                        <td><InlineMath math={path}/></td>
+                                        <td style={{maxWidth:'15px'}}><InlineMath math={path}/></td>
                                         <td>
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Time"
-                                                value={riderData[rider.name]?.[pathIndex]?.time || ''}
-                                                onChange={(e) => onChangeFunction(rider.name, pathIndex, 'time', e.target.value)}
+                                                value={riderData[rider.Name]?.[pathIndex]?.Time || ''}
+                                                onChange={(e) => onChangeFunction(rider.Name, pathIndex, 'time', e.target.value)}
+                                                disabled={!acceptChanges}
                                             />
                                         </td>
                                         <td>
@@ -36,8 +41,9 @@ const Table = ({riders, paths,riderData,onChangeFunction}) => {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Velocity"
-                                                value={riderData[rider.name]?.[pathIndex]?.velocity || ''}
-                                                onChange={(e) => onChangeFunction(rider.name, pathIndex, 'velocity', e.target.value)}
+                                                value={riderData[rider.Name]?.[pathIndex]?.Velocity || ''}
+                                                onChange={(e) => onChangeFunction(rider.Name, pathIndex, 'velocity', e.target.value)}
+                                                disabled={!acceptChanges}
                                             />
                                         </td>
                                         <td>
@@ -45,8 +51,9 @@ const Table = ({riders, paths,riderData,onChangeFunction}) => {
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Distance"
-                                                value={riderData[rider.name]?.[pathIndex]?.distance || ''}
-                                                onChange={(e) => onChangeFunction(rider.name, pathIndex, 'distance', e.target.value)}
+                                                value={riderData[rider.Name]?.[pathIndex]?.Distance || ''}
+                                                onChange={(e) => onChangeFunction(rider.Name, pathIndex, 'distance', e.target.value)}
+                                                disabled={!acceptChanges}
                                             />
                                         </td>
                                     </tr>
@@ -60,3 +67,5 @@ const Table = ({riders, paths,riderData,onChangeFunction}) => {
         </div>
     )
 }
+
+export default Table;

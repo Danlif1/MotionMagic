@@ -9,6 +9,7 @@ import {BrowserRouter, Route, Routes, Navigate} from
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Solve from "./main-pages/Solve";
 import History from "./main-pages/History"
+import AllGlobalSolutions from "./main-pages/AllGlobalSolutions";
 
 
 
@@ -30,6 +31,7 @@ function App() {
           }
           <Route path='/solve' element={<Solve/>} ></Route>
             <Route path='/history' element={<History/>} ></Route>
+            <Route path='/global-solutions' element={<AllGlobalSolutions/>} ></Route>
         </Routes>
       </BrowserRouter>
 

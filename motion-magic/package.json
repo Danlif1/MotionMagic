@@ -19,6 +19,7 @@
     "react-katex": "^3.0.1",
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
+    "react-toastify": "^10.0.5",
     "start": "^5.1.0",
     "web-vitals": "^2.1.4"
   },
@@ -26,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start0": "react-scripts start --host 0.0.0.0"
   },
   "eslintConfig": {
     "extends": [

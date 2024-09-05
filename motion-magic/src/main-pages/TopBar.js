@@ -5,7 +5,7 @@ import {faCalculator, faClockRotateLeft, faGlobe, faRightFromBracket} from "@for
 import './home.css'
 
 
-const TopBar = ({strToDisplay,displayName,gotosolve,gotohistory,signOut,username}) => {
+const TopBar = ({strToDisplay,displayName,gotosolve,gotohistory,signOut,username,gotoglobalsolutions}) => {
     return (
         <div className="navbar-custom">
             <Container fluid >
@@ -47,7 +47,7 @@ const TopBar = ({strToDisplay,displayName,gotosolve,gotohistory,signOut,username
                                     onClick={gotosolve}><FontAwesomeIcon icon={faCalculator}/> Solve</Button>
                             <Button variant="light" href="#" className="mr-2 custom-button"
                                     onClick={gotohistory}> <FontAwesomeIcon icon={faClockRotateLeft} /> History</Button>
-                            <Button variant="light" href="#" className="mr-2 custom-button"> <FontAwesomeIcon icon={faGlobe} /> Global Solutions</Button>
+                            <Button variant="light" href="#" className="mr-2 custom-button" onClick={gotoglobalsolutions}> <FontAwesomeIcon icon={faGlobe} /> Global Solutions</Button>
                         </Nav>
                         {/* Right Side */}
                     </Navbar.Collapse>

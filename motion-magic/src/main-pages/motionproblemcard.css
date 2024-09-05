@@ -7,3 +7,38 @@
     text-overflow: ellipsis;
     max-height: 4.5em; /* Roughly two lines of text */
 }
+.delete-button {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    transition: color 0.3s;
+    padding: 0;
+
+}
+
+.delete-button:hover {
+    color: red;
+}
+.collapse-button {
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    /*transition: color 0.3s;*/
+    padding: 0;
+    margin-right:200px
+}
+
+.collapse-button:hover {
+    color: blue;
+}
+.card-header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.card-column {
+    display: flex;
+    flex-direction: column;
+}
