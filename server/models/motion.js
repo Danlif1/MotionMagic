@@ -24,6 +24,31 @@ const CommentSchema = new Schema({
     }
 });
 
+const RiderSchema = new Schema({
+    Name: {
+        type: String
+    },
+    Paths: [{
+        type: String,
+        nullable: true
+    }]
+})
+
+const RiderDataSchema = new Schema({
+    Path: {
+        type: String
+    },
+    Time: {
+        type: String
+    },
+    Velocity: {
+        type: String
+    },
+    Distance: {
+        type: String
+    }
+})
+
 const ProblemSchema = new Schema({
     ID: {
         type: String,
@@ -43,6 +68,18 @@ const ProblemSchema = new Schema({
         type: String,
         nullable: true
     }],
+    Paths: [{
+        type: String,
+        nullable: true
+    }],
+    Riders: [{
+        type: RiderSchema,
+        nullable: true
+    }],
+    RidersData: {
+        type: Map,
+        of: [RiderDataSchema]
+    },
     Solution: [{
         type: String,
         nullable: true
@@ -92,7 +129,9 @@ const UserSchema = new Schema({
 
 const User = mongoose.model('User', UserSchema);
 const Problem = mongoose.model('Problem', ProblemSchema);
-const Comment = mongoose.model('Comment', CommentSchema)
+const Comment = mongoose.model('Comment', CommentSchema);
+const Rider = mongoose.model('Rider', RiderSchema);
+const RiderData = mongoose.model('RiderData', RiderDataSchema);
 
 
-module.exports = { User, Problem, Comment };
+module.exports = { User, Problem, Comment, Rider, RiderData };

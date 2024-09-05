@@ -1,15 +1,16 @@
-const {User, Problem} = require('../models/motion');
+const {User, Problem, Rider, RiderData} = require('../models/motion');
 const mongoose = require("mongoose");
 const {logErrorToFile, logActionToFile, logForbiddenToFile, logInternalErrorToFile} = require('../middleware/logger.js');
 const {sendToMultithreadedServer} = require("../connectTCPServer");
 const generateID = require("../middleware/IDgenerator")
 
-async function solveProblem(equations, username){
-    if (!equations) {
+async function solveProblem(equations, username, paths, riders, riderData){
+    if (!equations || !paths || !riders || !riderData) {
         return null;
     }
+    let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
-    if (!result) {
+    if (!result || !creator) {
         return null;
     } else {
         let newID;
@@ -20,15 +21,35 @@ async function solveProblem(equations, username){
                 break;
             }
         }
+        let _riders = []
+        for (let rider in riders) {
+            let _rider = await new Rider({
+                Name: rider["name"],
+                Paths: rider["paths"]
+            })
+            _riders.push(_rider)
+        }
+        let _ridersData = new Map();
+        for (const [key, value] of riderData) {
+            _ridersData[key] = await new RiderData({
+                Path: value["path"],
+                Time: value["time"],
+                Velocity: value["velocity"],
+                Distance: value["distance"]
+            });
+        }
         const problem = await new Problem({
             ID: newID,
             Equations: equations,
             Solution: result,
             Creator: username,
+            Paths: paths,
+            Riders: _riders,
+            RiderData: _ridersData,
             Likes: []
         })
+
         await problem.save();
-        let creator = await User.findOne({ Username: username });
         creator.Problems.push(problem);
         await creator.save();
         return result;
