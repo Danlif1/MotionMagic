@@ -1,29 +1,47 @@
-const {Problem, User} = require('../models/motion');
+const {Problem, User, Comment} = require('../models/motion');
 const {saveProblemToAll} = require("./generalFunctions");
 const generateID = require("../middleware/IDgenerator");
 
-async function byTime(nop){
+async function byTime(nop, username){
     if (!nop) {
         nop = 5
     }
     try {
-        return await Problem.find({ Public: true })
+        let problems =  await Problem.find({ Public: true })
             .sort({Time: -1})  // Sort by Time in descending order
             .limit(nop);
+        for (let problem in problems) {
+            if (!problem.Viewers.includes(username)) {
+                problem.Viewers.push(username);
+                problem.Views += 1;
+                await problem.save();
+                await saveProblemToAll(problem.ID, problem);
+            }
+        }
+        return problems;
     } catch (error) {
         console.error('Error fetching problems by time:', error);
         return null;
     }
 }
 
-async function byMostLikes(nop){
+async function byMostLikes(nop, username){
     if (!nop) {
         nop = 5
     }
     try {
-        return await Problem.find({ Public: true })
+        let problems =  await Problem.find({ Public: true })
             .sort({Likes: -1})  // Sort by Likes in descending order
             .limit(nop);
+        for (let problem of problems) {
+            if (!problem.Viewers.includes(username)) {
+                problem.Viewers.push(username);
+                problem.Views += 1;
+                await problem.save();
+                await saveProblemToAll(problem.ID, problem);
+            }
+        }
+        return problems;
     } catch (error) {
         console.error('Error fetching problems by time:', error);
         return null;
@@ -36,16 +54,16 @@ async function likeProblem(problemID, username) {
     if (!problem || !user) {
         return null
     }
-    if (problem.Likes.includes(user.DisplayName)) {
+    if (problem.Likes.includes(user.Username)) {
         // Remove like
-        problem.Likes.filter(u => u !== user.DisplayName);
+        problem.Likes.filter(u => u !== user.Username);
         await problem.save();
         user.LikedProblems.filter(p => p.ID !== problemID);
         await user.save();
         await saveProblemToAll(problemID, problem);
         return "Removed like";
     } else {
-        problem.Likes.push(user.DisplayName);
+        problem.Likes.push(user.Username);
         await problem.save();
         user.LikedProblems.push(problem);
         await user.save();

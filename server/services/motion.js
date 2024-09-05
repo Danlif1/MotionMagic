@@ -51,11 +51,14 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             Equations: equations,
             Solution: result,
             Creator: creator.DisplayName,
+            CreatorUsername: username,
             CreatorProfilePic: creator.ProfilePicture,
             Paths: paths,
             Riders: _riders,
             RiderData: _ridersData,
             Likes: [],
+            Viewers: [],
+            Comments: [],
             Public: isPublic
         })
 

@@ -60,6 +60,10 @@ const ProblemSchema = new Schema({
         type: String,
         required: true
     },
+    CreatorUsername: {
+        type: String,
+        required: true
+    },
     CreatorProfilePic: {
         type: String,
         nullable: true
@@ -92,6 +96,10 @@ const ProblemSchema = new Schema({
         nullable: true
     }],
     Likes: [{
+        type: String,
+        nullable: true
+    }],
+    Viewers: [{
         type: String,
         nullable: true
     }],
