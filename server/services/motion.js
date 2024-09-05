@@ -5,6 +5,9 @@ const {sendToMultithreadedServer} = require("../connectTCPServer");
 const generateID = require("../middleware/IDgenerator")
 
 async function solveProblem(equations, username){
+    if (!equations) {
+        return null;
+    }
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
     if (!result) {
         return null;
@@ -65,7 +68,6 @@ async function deleteProblem(username, problemID) {
         { 'starredProblems.ID': problemID },
         { $pull: { starredProblems: { ID: problemID } } }
     );
-
     return [200, "Problem deleted successfully"];
 }
 

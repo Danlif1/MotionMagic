@@ -44,6 +44,16 @@ router.get('/api/viewProblems/newest/:nop', viewController.byTime);
  */
 router.put('/api/problem/:pid/like', authenticateToken, viewController.likeProblem);
 
+/**
+ * This is the comment on a problem request.
+ * body: comment.
+ * params (path): problem id.
+ * Result:
+ * If worked status 200 with the message commented problem.
+ * If didn't work status 500 with error couldn't comment problem.
+ */
+router.post('/api/problem/:pid/comment', authenticateToken, viewController.commentProblem);
+
 
 module.exports = router;
 
