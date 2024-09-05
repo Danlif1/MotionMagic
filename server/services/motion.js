@@ -44,8 +44,8 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
                 });
                 data.push(single_data)
             }
-            _ridersData[key] = data
-        }
+            _ridersData[key] = data
+        }
         const problem = await new Problem({
             ID: newID,
             Equations: equations,
