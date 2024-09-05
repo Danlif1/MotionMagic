@@ -218,11 +218,12 @@ def motion_solver(equations):
 
     try:
         if compare_solutions(solution, final_solution):
-            return path
+            return [path, str(solution)]
         else:
-            return f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"
+            return [f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}", str(solution)]
     except:
-        return f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"
+        return [f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}", str(solution)]
 
 
-print(motion_solver(["3*x=5", "2*x-2*y=0"]))
+
+solution = motion_solver(["3*x=5", "2*x-2*y=0"])
