@@ -7,7 +7,7 @@ async function byTime(nop){
         nop = 5
     }
     try {
-        return await Problem.find()
+        return await Problem.find({ Public: true })
             .sort({Time: -1})  // Sort by Time in descending order
             .limit(nop);
     } catch (error) {
@@ -21,7 +21,7 @@ async function byMostLikes(nop){
         nop = 5
     }
     try {
-        return await Problem.find()
+        return await Problem.find({ Public: true })
             .sort({Likes: -1})  // Sort by Likes in descending order
             .limit(nop);
     } catch (error) {

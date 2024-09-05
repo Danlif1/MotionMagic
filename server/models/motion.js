@@ -95,7 +95,11 @@ const ProblemSchema = new Schema({
     Comments: [{
         type: CommentSchema,
         nullable: true
-    }]
+    }],
+    Public: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const UserSchema = new Schema({

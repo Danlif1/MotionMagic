@@ -8,7 +8,7 @@ const authenticateToken = require('../middleware/authenticateToken');
 /**
  * This is the solve request.
  * Request body: {equations: [list of equations], paths: [list of paths],
- * riders: [list of riders], riderData: [Map of riderData]}
+ * riders: [list of riders], riderData: [Map of riderData]}, isPublic: ["true" or "false"]
  * No params (path) data.
  * Example result:
  * for body: ["x+y+z=3", "y+z=3", "y=1"]

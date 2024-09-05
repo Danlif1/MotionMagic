@@ -4,10 +4,11 @@ const {logErrorToFile, logActionToFile, logForbiddenToFile, logInternalErrorToFi
 const {sendToMultithreadedServer} = require("../connectTCPServer");
 const generateID = require("../middleware/IDgenerator")
 
-async function solveProblem(equations, username, paths, riders, riderData){
+async function solveProblem(equations, username, paths, riders, riderData, isPublic){
     if (!equations || !paths || !riders || !riderData) {
         return null;
     }
+    isPublic = isPublic === "true";
     let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
     if (!result || !creator) {
@@ -31,12 +32,17 @@ async function solveProblem(equations, username, paths, riders, riderData){
         }
         let _ridersData = new Map();
         for (const [key, value] of riderData) {
-            _ridersData[key] = await new RiderData({
-                Path: value["path"],
-                Time: value["time"],
-                Velocity: value["velocity"],
-                Distance: value["distance"]
-            });
+            let data = []
+            for (let rider in value) {
+                let single_data = await new RiderData({
+                    Path: rider["path"],
+                    Time: rider["time"],
+                    Velocity: rider["velocity"],
+                    Distance: rider["distance"]
+                });
+                data.push(single_data)
+            }
+            _ridersData[key] = data
         }
         const problem = await new Problem({
             ID: newID,
@@ -46,7 +52,8 @@ async function solveProblem(equations, username, paths, riders, riderData){
             Paths: paths,
             Riders: _riders,
             RiderData: _ridersData,
-            Likes: []
+            Likes: [],
+            Public: isPublic
         })
 
         await problem.save();

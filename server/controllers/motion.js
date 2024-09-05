@@ -2,7 +2,8 @@ const problemService = require('../services/motion');
 
 async function solveProblem(req, res) {
     const solution = await problemService.solveProblem(req.body.equations, req.user.username,
-                                                        req.body._paths, req.body.riders, req.body.riderData);
+                                                        req.body._paths, req.body.riders, req.body.riderData,
+                                                        req.body.isPublic);
     if (!solution) {
         return res.status(500).json({ error: 'Error finding a solution' });
     }
