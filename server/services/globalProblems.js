@@ -10,12 +10,14 @@ async function byTime(nop, username){
         let problems =  await Problem.find({ Public: true })
             .sort({Time: -1})  // Sort by Time in descending order
             .limit(nop);
-        for (let problem in problems) {
+        for (let problem of problems) {
             if (!problem.Viewers.includes(username)) {
                 problem.Viewers.push(username);
                 problem.Views += 1;
                 await problem.save();
                 await saveProblemToAll(problem.ID, problem);
+            } else {
+                problem.Views += 1;
             }
         }
         return problems;
@@ -39,6 +41,8 @@ async function byMostLikes(nop, username){
                 problem.Views += 1;
                 await problem.save();
                 await saveProblemToAll(problem.ID, problem);
+            } else {
+                problem.Views += 1;
             }
         }
         return problems;

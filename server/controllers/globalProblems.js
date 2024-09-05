@@ -1,7 +1,12 @@
 const globalProblemService = require('../services/globalProblems');
 
 async function byTime(req, res){
-    const result = await globalProblemService.byTime(req.params.nop, req.user.username);
+    let result;
+    try {
+        result = await globalProblemService.byTime(req.params.nop, req.user.username);
+    } catch {
+        result = await globalProblemService.byTime(req.params.nop, "unnamed");
+    }
     if (!result) {
         return res.status(404).json({ error: "problems not found" });
     } else {
@@ -10,7 +15,12 @@ async function byTime(req, res){
 }
 
 async function byMostLikes(req, res){
-    const result = await globalProblemService.byMostLikes(req.params.nop, req.user.username);
+    let result;
+    try {
+        result = await globalProblemService.byMostLikes(req.params.nop, req.user.username);
+    } catch {
+        result = await globalProblemService.byMostLikes(req.params.nop, "unnamed");
+    }
     if (!result) {
         return res.status(404).json({ error: "problems not found" });
     } else {
