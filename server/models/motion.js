@@ -117,6 +117,45 @@ const ProblemSchema = new Schema({
     }
 })
 
+const DraftSchema = new Schema({
+    ID: {
+        type: String,
+        nullable:true
+    },
+    Creator: {
+        type: String,
+        required: true
+    },
+    CreatorUsername: {
+        type: String,
+        required: true
+    },
+    CreatorProfilePic: {
+        type: String,
+        nullable: true
+    },
+    Time: {
+        type: Date,
+        default: Date.now()
+    },
+    Equations: [{
+        type: String,
+        nullable: true
+    }],
+    Paths: [{
+        type: String,
+        nullable: true
+    }],
+    Riders: [{
+        type: RiderSchema,
+        nullable: true
+    }],
+    RidersData: {
+        type: Map,
+        of: [RiderDataSchema]
+    }
+})
+
 const UserSchema = new Schema({
     Username: {
         type: String,
@@ -143,14 +182,19 @@ const UserSchema = new Schema({
     LikedProblems: [{
         type: ProblemSchema,
         nullable: true
+    }],
+    Drafts: [{
+        type: DraftSchema,
+        nullable: true
     }]
 })
 
 const User = mongoose.model('User', UserSchema);
 const Problem = mongoose.model('Problem', ProblemSchema);
+const Draft = mongoose.model('Draft', DraftSchema);
 const Comment = mongoose.model('Comment', CommentSchema);
 const Rider = mongoose.model('Rider', RiderSchema);
 const RiderData = mongoose.model('RiderData', RiderDataSchema);
 
 
-module.exports = { User, Problem, Comment, Rider, RiderData };
+module.exports = { User, Problem, Draft, Comment, Rider, RiderData };

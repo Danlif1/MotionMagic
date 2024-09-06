@@ -7,7 +7,7 @@ const authenticateToken = require('../middleware/authenticateToken');
 
 /**
  * This is the solve request.
- * Request body: {equations: [list of equations], paths: [list of paths],
+ * Request body: {equations: [list of equations], _paths: [list of paths],
  * riders: [list of riders], riderData: [Map of riderData]}, isPublic: ["true" or "false"]
  * No params (path) data.
  * Example result:
@@ -49,10 +49,29 @@ router.get("/api/likedProblems", authenticateToken, problemController.likedProbl
  * No body,
  * Params (path) data: problem id.
  * The result will be status 200 if worked with message: Problem deleted successfully
- * Or: status 403 with the message You are not the creator if didn't work.
+ * Or: status 403 with the message: You are not the creator if didn't work.
  *
  */
 router.delete("/api/deleteProblem/:pid", authenticateToken, problemController.deleteProblem);
 
+/**
+ * This is the save problem draft request.
+ * Request body: _paths: [list of paths], riders: [list of riders],
+ *                 riderData: [Map of riderData]}, equations: [list of equations]
+ * No params (path) data.
+ * The result will be status 200 if worked with message: Draft saved successfully
+ * Or: status 500 with the message: Could not save draft.
+ */
+router.post("/api/saveDraft", authenticateToken, problemController.saveDraft);
+
+/**
+ * This is the delete draft request.
+ * No body,
+ * Params (path) data: draft id.
+ * The result will be status 200 if worked with message: Draft deleted successfully
+ * Or: status 403 with the message: You are not the creator if didn't work.
+ *
+ */
+router.delete("/api/deleteDraft/:did", authenticateToken, problemController.deleteDraft);
 
 module.exports = router;

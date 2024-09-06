@@ -32,9 +32,22 @@ async function deleteProblem(req, res) {
     return res.status(status[0]).json({ message: status[1] });
 }
 
+async function saveDraft(req, res) {
+    const result = await problemService.saveDraft(req.body._paths, req.body.riders, req.body.riderData,
+                                                    req.body.equations, req.user.username);
+    return res.status(result[0]).json({ message: result[1] })
+}
+
+async function deleteDraft(req, res) {
+    const status = await problemService.deleteDraft(req.user.username, req.params.did);
+    return res.status(status[0]).json({ message: status[1] });
+}
+
 module.exports = {
     solveProblem,
     myProblems,
     likedProblems,
-    deleteProblem
+    deleteProblem,
+    saveDraft,
+    deleteDraft
 };

@@ -1,4 +1,4 @@
-const {User, Problem, Rider, RiderData} = require('../models/motion');
+const {User, Problem, Draft, Rider, RiderData} = require('../models/motion');
 const mongoose = require("mongoose");
 const {logErrorToFile, logActionToFile, logForbiddenToFile, logInternalErrorToFile} = require('../middleware/logger.js');
 const {sendToMultithreadedServer} = require("../connectTCPServer");
@@ -54,6 +54,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             Creator: creator.DisplayName,
             CreatorUsername: username,
             CreatorProfilePic: creator.ProfilePicture,
+            Time: Date.now(),
             Paths: paths,
             Riders: _riders,
             RidersData: _ridersData,
@@ -106,9 +107,84 @@ async function deleteProblem(username, problemID) {
     return [200, "Problem deleted successfully"];
 }
 
+async function saveDraft(paths, riders, riderData, equations, username) {
+    if (!paths || !riders || !riderData) {
+        return null;
+    }
+    let creator = await User.findOne({ Username: username });
+    if (!creator) {
+        return [null, "Could not save draft"];
+    } else {
+        let newID;
+        while (true) {
+            newID = generateID(16);
+            const checkProblem = await Problem.findOne({ ID: newID });
+            if (!checkProblem) {
+                break;
+            }
+        }
+        let _riders = [];
+        for (let rider of riders) {
+            let _rider = await new Rider({
+                Name: rider.name,
+                Paths: rider.paths
+            });
+            await _rider.save();
+            _riders.push(_rider);
+        }
+
+        const _ridersData = new Map();
+        for (const [key, value] of Object.entries(riderData)) {
+            let data = [];
+            for (const rider of value) {
+                let single_data = await new RiderData({
+                    Path: rider.path,
+                    Time: rider.time,
+                    Velocity: rider.velocity,
+                    Distance: rider.distance
+                });
+                await single_data.save();
+                data.push(single_data);
+            }
+            _ridersData.set(key, data);
+        }
+        const draft = await new Draft({
+            ID: newID,
+            Creator: creator.DisplayName,
+            CreatorUsername: username,
+            CreatorProfilePic: creator.ProfilePicture,
+            Time: Date.now(),
+            Equations: equations,
+            Paths: paths,
+            Riders: _riders,
+            RidersData: _ridersData
+        })
+
+        await draft.save();
+        creator.Drafts.push(draft);
+        await creator.save();
+        return [200, "Draft saved successfully"];
+    }
+
+}
+
+async function deleteDraft(username, draftID) {
+    let user = await User.findOne({ Username: username});
+    let problem = await Draft.findOne({ ID: draftID });
+    if (problem.Creator !== username) {
+        return [403, "You are not the creator"];
+    }
+    await Draft.findOneAndDelete({ ID: draftID });
+    user.Drafts = user.Drafts.filter(p => p.ID !== draftID);
+    await user.save();
+    return [200, "Problem deleted successfully"];
+}
+
 module.exports = {
     solveProblem,
     getMyProblems,
     getLikedProblems,
-    deleteProblem
+    deleteProblem,
+    saveDraft,
+    deleteDraft
 };
