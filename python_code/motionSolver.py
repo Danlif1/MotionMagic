@@ -5,11 +5,17 @@ import sympy as sp
 
 
 def compare_solutions(final_solution, solution):
-    # Convert all values in final_solution and solution to floats for comparison
     final_solution_float = {k: float(v) for k, v in final_solution.items()}
     solution_float = {k: float(v) for k, v in solution.items()}
+    epsilon = 1e-9
+    if final_solution_float.keys() != solution_float.keys():
+        return False
 
-    return final_solution_float == solution_float
+    for k in final_solution_float:
+        if abs(final_solution_float[k] - solution_float[k]) >= epsilon:
+            return False
+
+    return True
 
 
 def solve_non_linear(equations):
@@ -135,7 +141,6 @@ def equations_to_matrix_equation(equation_list, variables):
         else:
             terms = expr_rhs.as_ordered_terms()
             for term in terms:
-                print(term)
                 coef = term.coeff(var)
                 if coef is None:
                     constant_vector[i, 0] += -term
@@ -182,7 +187,6 @@ def rearrange_equations(unsimplified_equations):
         left_side = sum(variables)
         right_side = -const
 
-        print(f"{left_side} = {right_side}")
         final_eq = f"{left_side} = {right_side}"
         rearranged_eqs.append(final_eq)
 
@@ -207,14 +211,13 @@ def motion_solver(equations):
         matrix1 = equations_to_matrix_equation(equations, variables)
         reduced_matrix, path = row_reduce(matrix1, equations, string_variables)
         path.insert(0, starting_string)
-        for step in path:
-            print(step)
 
         final_solution = extract_solution(reduced_matrix, variables)
         path.append(f"We get that the solution is: {final_solution}")
     except:
         solution = solve_non_linear(equations)
-        return [[f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"],str(solution)]
+        return [[f"The equations are non linear.\n Giving solution without steps.\n The solutions is {solution}"],
+                str(solution)]
 
     try:
         if compare_solutions(solution, final_solution):
@@ -227,6 +230,4 @@ def motion_solver(equations):
                 str(solution)]
 
 
-solution = motion_solver(["3*x=3", "2*x=2"])
-print(solution[0])
-print(solution[1])
+solution = motion_solver(["2*x=1", "y=2"])
