@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const CommentSchema = new Schema({
     ID: {
-        type: Number,
+        type: String,
         integer: true
     },
     Created: {
