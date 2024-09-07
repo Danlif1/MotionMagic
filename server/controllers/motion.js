@@ -10,6 +10,14 @@ async function solveProblem(req, res) {
     res.status(200).json({ message: 'Success', solution: solution });
 }
 
+async function getProblem(req, res) {
+    const problem = await problemService.getProblem(req.params.pid, req.user.username);
+    if (!problem) {
+        return res.status(404).json({ error: "could not find problem" });
+    }
+    res.status(200).json({ message: 'Success', problem: problem});
+}
+
 async function myProblems(req, res) {
     const problems = await problemService.getMyProblems(req.user.username);
     if (!problems) {
@@ -45,6 +53,7 @@ async function deleteDraft(req, res) {
 
 module.exports = {
     solveProblem,
+    getProblem,
     myProblems,
     likedProblems,
     deleteProblem,

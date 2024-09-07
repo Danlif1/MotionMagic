@@ -16,6 +16,9 @@ const authenticateToken = require('../middleware/authenticateToken');
  */
 router.post("/api/solve", authenticateToken, problemController.solveProblem);
 
+
+router.get("/api/problem/:pid", authenticateToken, problemController.getProblem);
+
 /**
  * This is the history request.
  * No body, no params (path) data.

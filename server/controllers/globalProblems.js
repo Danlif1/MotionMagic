@@ -31,7 +31,7 @@ async function byMostLikes(req, res){
 async function likeProblem(req, res){
     const result = await globalProblemService.likeProblem(req.params.pid, req.user.username);
     if (!result) {
-        return res.status(500).json({ error: "couldn't like problem" });
+        return res.status(500).json({ error: "couldn't like or dislike the problem" });
     } else {
         return res.status(200).json({ message: result });
     }

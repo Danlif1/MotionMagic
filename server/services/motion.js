@@ -71,6 +71,18 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
     }
 }
 
+
+async function getProblem(problemID, username) {
+    const problem = await Problem.findOne({ ID: problemID });
+    const user = await User.findOne({ Username: username });
+    if (!user || !problem) {
+        return null
+    }
+    if (problem.CreatorUsername === username || problem.Public) {
+        return problem;
+    }
+}
+
 async function getMyProblems(username) {
     let user = await User.findOne({ Username: username });
     if (!user) {
@@ -182,6 +194,7 @@ async function deleteDraft(username, draftID) {
 
 module.exports = {
     solveProblem,
+    getProblem,
     getMyProblems,
     getLikedProblems,
     deleteProblem,
