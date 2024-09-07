@@ -16,7 +16,14 @@ const authenticateToken = require('../middleware/authenticateToken');
  */
 router.post("/api/solve", authenticateToken, problemController.solveProblem);
 
-
+/**
+ * This is the get problem by ID request.
+ * No body.
+ * params (path): problem id.
+ * Result:
+ * If worked status 200 with the message: Success and problem: [the problem with id pid].
+ * If didn't work status 404 with error: couldn't find problem.
+ */
 router.get("/api/problem/:pid", authenticateToken, problemController.getProblem);
 
 /**
