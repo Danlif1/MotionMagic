@@ -100,6 +100,7 @@ async function commentProblem(problemID, comment, username) {
     problem.Comments.push(newComment);
     await problem.save()
     await saveProblemToAll(problemID, problem);
+    return true;
 }
 
 module.exports = {
