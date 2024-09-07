@@ -40,7 +40,7 @@ async function likeProblem(req, res){
 async function commentProblem(req, res){
     const result = await globalProblemService.commentProblem(req.params.pid, req.body.commentProblem, req.user.username);
     if (!result) {
-        return res.status(500).json({ error: "couldn't like problem" });
+        return res.status(500).json({ error: "couldn't comment problem" });
     } else {
         return res.status(200).json({ message: result });
     }
