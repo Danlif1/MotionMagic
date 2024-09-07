@@ -103,9 +103,19 @@ async function commentProblem(problemID, comment, username) {
     return true;
 }
 
+async function getProblem(problemID) {
+    const problem = await Problem.findOne({ ID: problemID });
+    if (problem.Public) {
+        return problem;
+    } else {
+        return null;
+    }
+}
+
 module.exports = {
     byTime,
     byMostLikes,
     likeProblem,
-    commentProblem
+    commentProblem,
+    getProblem
 };

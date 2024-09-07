@@ -46,9 +46,19 @@ async function commentProblem(req, res){
     }
 }
 
+async function getProblem(req, res) {
+    const result = await globalProblemService.getProblem(req.params.pid);
+    if (!result) {
+        return res.status(500).json({error: "couldn't get problem"});
+    } else {
+        return res.status(200).json({message: 'Success', problem: result});
+    }
+}
+
 module.exports = {
     byMostLikes,
     byTime,
     likeProblem,
-    commentProblem
+    commentProblem,
+    getProblem
 };

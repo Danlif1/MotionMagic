@@ -54,6 +54,15 @@ router.put('/api/problem/:pid/like', authenticateToken, viewController.likeProbl
  */
 router.post('/api/problem/:pid/comment', authenticateToken, viewController.commentProblem);
 
+/**
+ * This is the get problem by ID request.
+ * No body.
+ * params (path): problem id.
+ * Result:
+ * If worked status 200 with the message: Success and problem: [the problem with id pid].
+ * If didn't work status 404 with error: couldn't find problem.
+ */
+router.get('/api/problem/:pid', viewController.getProblem);
 
 module.exports = router;
 

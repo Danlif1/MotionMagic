@@ -76,10 +76,12 @@ async function getProblem(problemID, username) {
     const problem = await Problem.findOne({ ID: problemID });
     const user = await User.findOne({ Username: username });
     if (!user || !problem) {
-        return null
+        return null;
     }
-    if (problem.CreatorUsername === username || problem.Public) {
+    if (problem.CreatorUsername === username) {
         return problem;
+    } else {
+        return null;
     }
 }
 
