@@ -55,4 +55,43 @@
 .heart-button:hover {
     transform:scale(1.2)
 }
+/*.my-modal {*/
+/*    --bs-modal-width:100% !important;*/
+/*    width: 80% !important;*/
+/*    min-width: 80% !important;*/
+/*}*/
 
+/*.modal-height {*/
+
+/*    height: 100% !important;*/
+/*    min-height: 100% !important;*/
+/*}*/
+
+.custom-modal-height .modal-dialog {
+    max-width: 90%; /* Set max width of modal */
+    width: 90% !important;
+    min-width: 90% !important;
+    --bs-modal-width:100% !important;
+    height: 90vh; /* Set height relative to viewport */
+    max-height: 90vh; /* Ensure modal does not exceed viewport height */
+}
+
+.custom-modal-height .modal-content {
+    height: 100%; /* Ensure content fills the modal */
+}
+
+.custom-modal-height .modal-body {
+    display: flex;
+    flex-direction: row;
+    height: 100%; /* Ensure body fills the modal */
+}
+
+.custom-modal-height .modal-body {
+    overflow-y: auto;
+    height: 100%;
+}
+.blabla {
+    height:90vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

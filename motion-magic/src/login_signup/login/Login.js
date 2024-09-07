@@ -51,6 +51,14 @@ function Login({setLoggedIn}) {
             const json2 = await res2.json();
             name_picture.displayname = json2.DisplayName;
             name_picture.profilePicture = json2.ProfilePicture
+            if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
+                console.log("in if with: " + name_picture.profilePicture);
+            } else if (name_picture.profilePicture!=="") {
+                console.log("in else with: " + name_picture.profilePicture);
+                name_picture.profilePicture = `data:image/jpeg;charset=utf-8;base64,${name_picture.profilePicture}`
+            }else{
+                name_picture.profilePicture = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
+            }
             // "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
             name_picture.userName = json2.Username;
             //go to chat, and set error to false (no error).

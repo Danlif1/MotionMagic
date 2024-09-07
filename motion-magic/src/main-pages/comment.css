@@ -1,0 +1,26 @@
+.comment {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.comment-creator {
+    font-size: 1.1rem;
+}
+
+.comment-text {
+    font-size: 1rem;
+}
+
+.comment-header small {
+    font-size: 0.8rem;
+    color: #777;
+}
+.comment-left {
+    display: flex;
+    align-items: center;
+}
+
+.comment-right {
+    font-size: 0.9em;
+    color: gray;
+}

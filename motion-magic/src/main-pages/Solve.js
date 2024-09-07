@@ -33,16 +33,7 @@ const testParsing = (expression) => {
 
 testParsing('2 + 2');
 testParsing('2 + 2');
-let strToDisplay
-if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
-    console.log("in if with: " + name_picture.profilePicture);
-    strToDisplay=name_picture.profilePicture
-} else if (name_picture.userName!=="") {
-    console.log("in else with: " + name_picture.profilePicture);
-    strToDisplay = `data:image/jpeg;charset=utf-8;base64,${name_picture.profilePicture}`
-}else{
-    strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
-}
+
 const Solve = () => {
     const navigate = useNavigate();
     const [error, setError] = React.useState('');
@@ -101,7 +92,7 @@ const Solve = () => {
                 }
             });
             console.log('Server response sol:', response.data['solution'])
-            setServerResponse([response.data['solution']]); // Store the response
+            setServerResponse(response.data['solution']); // Store the response
             console.log('Server response:', response.data); // Log the response for debugging
             console.log('serverResponse is ',serverResponse)
         } catch (error) {
@@ -342,7 +333,7 @@ const Solve = () => {
 
     return (
         <>
-        <TopBar strToDisplay={strToDisplay} displayName={name_picture.displayname} gotohistory={gotohistory}
+        <TopBar strToDisplay={name_picture.profilePicture} displayName={name_picture.displayname} gotohistory={gotohistory}
                 gotosolve={gotosolve} signOut={signOut} username={name_picture.userName} gotoglobalsolutions={gotoglobalsolutions}/>
         <div>
             <div style={{paddingTop: '3px'}}>

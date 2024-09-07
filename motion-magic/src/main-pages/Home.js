@@ -44,22 +44,13 @@ function Home({setLoggedIn}){
     function gotoglobalsolutions(){
         navigate('/global-solutions',{replace:true});
     }
-    let strToDisplay
-    if(name_picture.profilePicture==="https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg"){
-        console.log("in if with: " + name_picture.profilePicture);
-        strToDisplay=name_picture.profilePicture
-    } else if (name_picture.userName!=="") {
-        console.log("in else with: " + name_picture.profilePicture);
-        strToDisplay = `data:image/jpeg;charset=utf-8;base64,${name_picture.profilePicture}`
-    }else{
-        strToDisplay = "https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg";
-    }
+
     // if(name_picture.userName===""){
     //     nameToDisplay = "someUser"
     // }
     return (
         <>
-            <TopBar strToDisplay={strToDisplay} displayName={name_picture.displayname} gotohistory={gotohistory}
+            <TopBar strToDisplay={name_picture.profilePicture} displayName={name_picture.displayname} gotohistory={gotohistory}
                     gotosolve={gotosolve} signOut={signOut} username={name_picture.userName} gotoglobalsolutions={gotoglobalsolutions}/>
         <Container fluid>
                 <Container className="text-center" style={{marginTop: '20px'}}>

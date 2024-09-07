@@ -104,16 +104,16 @@ img[src=''] {
     position:absolute;
 }
 
-@media (max-width: 768px) {
-    .col-4, .col-8 {
-        flex: 0 0 100%;
-        max-width: 100%; /* Stack the form and logo vertically on smaller screens */
-    }
+/*@media (max-width: 768px) {*/
+/*    .col-4, .col-8 {*/
+/*        flex: 0 0 100%;*/
+/*        max-width: 100%; !* Stack the form and logo vertically on smaller screens *!*/
+/*    }*/
 
-    .logo1 {
-        margin-top: 10%; /* Adjust for smaller screens if needed */
-    }
-}
+/*    .logo1 {*/
+/*        margin-top: 10%; !* Adjust for smaller screens if needed *!*/
+/*    }*/
+/*}*/
 /*@keyframes typewriter {*/
 /*    from { width: 0; }*/
 /*    to { width: 100%; }*/

@@ -11,7 +11,7 @@ const FullSolution = ({problem,showTable=false}) => {
         <h5>Solution:</h5>
         <SolutionSteps serverResponseSolution={problem.Solution}/>
         {showTable && (<>
-            <h5>Table:</h5>
+            <h5>Tables:</h5>
             <Table riders={problem.Riders} paths={problem.Paths} riderData={problem.RidersData}/>
         </>)}
 

@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
 
-const SolutionSteps = ({serverResponseSolution,showTable=false}) => {
-    console.log('srs', serverResponseSolution,typeof(serverResponseSolution[0]));
+const SolutionSteps = ({serverResponseSolution}) => {
+    //console.log('srs', serverResponseSolution,typeof(serverResponseSolution[0]));
     if (!serverResponseSolution) {
         return <div>No solution found.</div>; // Display message if no response
     }
