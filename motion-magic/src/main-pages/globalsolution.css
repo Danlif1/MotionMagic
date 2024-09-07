@@ -94,4 +94,26 @@
     height:90vh;
     overflow-y: scroll;
     overflow-x: hidden;
+    word-break: break-word;
+}
+.rightsidesolution::-webkit-scrollbar {
+    width: 10px;
+}
+
+.commentslist::-webkit-scrollbar {
+    display:none;
+}
+.rightsidesolution::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 5px;
+}
+.rightsidesolution::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+    border: 2px solid #f1f1f1;
+
+}
+.rightsidesolution::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+
 }

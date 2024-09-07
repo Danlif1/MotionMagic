@@ -62,10 +62,8 @@ const GlobalSolution = ({problem, pid}) => {
                     }
                 });
             if (response.status === 200) {
-                toast.success(response.data.message, {
-                    position: "bottom-left",
-                    autoClose: 3000,
-                });
+
+                await fetchComments();
             } else {
                 toast.error(response.data.message, {
                     position: "bottom-left",
@@ -210,9 +208,9 @@ const GlobalSolution = ({problem, pid}) => {
                 </div>
             </div>
             <Modal show={showCommentsModal} onHide={handleCloseModal} size="xl" centered>
-                <Modal.Body style={{display: 'flex'}} className={'blabla'}>
+                <Modal.Body style={{display: 'flex',overflow:'hidden'}} className={'blabla'}>
                     {/* Left Side: Solution */}
-                    <div style={{flex: 1, paddingRight: '20px', borderRight: '1px solid #ccc'}}>
+                    <div style={{flex: 1, paddingRight: '20px', borderRight: '1px solid #ccc',overflowY:'auto'}} className={'rightsidesolution'}>
                         <FullSolution problem={problem} showTable={true}/>
                     </div>
 
@@ -254,7 +252,7 @@ const GlobalSolution = ({problem, pid}) => {
                             <h5>Comments</h5>
 
                         </div>
-                        <div style={{flex: 1, overflowY: 'auto'}}>
+                        <div style={{flex: 1, overflowY: 'auto'}} className='commentslist'>
                             {error && (
                                 <div className="alert alert-danger">
                                     {error}
