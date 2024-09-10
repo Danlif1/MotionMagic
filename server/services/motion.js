@@ -12,7 +12,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
     isPublic = isPublic === "true";
     let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
-    result[1] = await stringToMap(result[1]);
+    let finalResult = await stringToMap(result[1]);
     if (!result || !creator) {
         return null;
     } else {
@@ -51,8 +51,8 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
         const problem = await new Problem({
             ID: newID,
             Equations: equations,
-            Solution: result[0],
-            FinalSolution: result[1],
+            Solution: result,
+            FinalSolution: finalResult,
             Creator: creator.DisplayName,
             CreatorUsername: username,
             CreatorProfilePic: creator.ProfilePicture,

@@ -88,7 +88,10 @@ const ProblemSchema = new Schema({
         type: Map,
         of: [RiderDataSchema]
     },
-    Solution: [{ // The full solution
+    Solution: [[{ // The full solution
+        type: String,
+        nullable: true
+    }], {
         type: String,
         nullable: true
     }],
