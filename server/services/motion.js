@@ -33,7 +33,6 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
             await _rider.save();
             _riders.push(_rider);
         }
-
         const _ridersData = new Map();
         for (const [key, value] of Object.entries(riderData)) {
             let data = [];
@@ -52,7 +51,8 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
         const problem = await new Problem({
             ID: newID,
             Equations: equations,
-            Solution: result,
+            Solution: result[0],
+            FinalSolution: result[1],
             Creator: creator.DisplayName,
             CreatorUsername: username,
             CreatorProfilePic: creator.ProfilePicture,

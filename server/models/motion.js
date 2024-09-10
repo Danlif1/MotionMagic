@@ -88,13 +88,14 @@ const ProblemSchema = new Schema({
         type: Map,
         of: [RiderDataSchema]
     },
-    Solution: [[{ // The full solution
+    Solution: [{ // The full solution
         type: String,
         nullable: true
-    }], { // The final solution
+    }],
+    FinalSolution: { // The final solution
         type: Map,
         of: Number
-    }],
+    },
     Likes: [{
         type: String,
         nullable: true

@@ -26,11 +26,11 @@ async function stringToMap(mapStr) {
     const entries = pairs.map(pair => {
         const [key, value] = pair.split(':');
         // Handle value which could be a fraction
-        return [key.trim(), eval(value.trim())];
+        return [key.trim().toString(), eval(value.trim())];
     });
 
     // Create and return the Map
-    return new Map(entries);
+    return Object.fromEntries(entries);
 }
 
 
