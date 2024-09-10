@@ -10,6 +10,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Solve from "./main-pages/Solve";
 import History from "./main-pages/History"
 import AllGlobalSolutions from "./main-pages/AllGlobalSolutions";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -17,7 +19,7 @@ import AllGlobalSolutions from "./main-pages/AllGlobalSolutions";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   return (
-
+        <>
       <BrowserRouter>
         <Routes>
           <Route path='/login' element = {<Login setLoggedIn={setLoggedIn}/>} />
@@ -34,6 +36,9 @@ function App() {
             <Route path='/global-solutions' element={<AllGlobalSolutions/>} ></Route>
         </Routes>
       </BrowserRouter>
+            <ToastContainer position="bottom-left" autoClose={3000} />
+        </>
+
 
   );
 }

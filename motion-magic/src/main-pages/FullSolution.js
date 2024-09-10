@@ -19,7 +19,7 @@ const FullSolution = ({problem,showTable=false,showFinalTableSol=false}) => {
 
 
         <FinalTableEvaluated riders={problem.Riders} paths={problem.Paths} riderData={problem.RidersData}
-                             finalVarSolutionsScope={problem.Solution[1][0]} st={showft}/>
+                             finalVarSolutionsScope={problem.FinalSolution} st={showft}/>
         <button className='collapse-button' style={{marginLeft: 0, fontSize: 20, color: "blue"}}
                 onClick={() => setShowft(!showft)}>{!showft ? 'Show final table' : 'Hide final table'}</button>
 

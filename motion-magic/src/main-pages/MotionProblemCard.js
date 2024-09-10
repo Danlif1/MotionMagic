@@ -32,9 +32,11 @@ const MotionProblemCard = ({problem,pid,refresh}) => {
         setIsPublic(problem.Public);
     },[problem])
     const toggleOpen = () => {
+
         setIsOpen(!isOpen);
     };
     const handleDelete = async () => {
+
         try {
             const response = await axios.delete(`http://localhost:5000/api/deleteProblem/${pid}`, {
                 headers: {
@@ -43,30 +45,32 @@ const MotionProblemCard = ({problem,pid,refresh}) => {
             });
 
             if (response.status === 200) {
-                refresh()
                 toast.success(response.data.message, {
                     position: "bottom-left",
                     autoClose: 3000,
                 });
+                refresh()
+
+
 
 
             } else {
-                toast.success(response.data.message, {
+                toast.error(response.data.message, {
                     position: "bottom-left",
-                    autoClose: 3000,
+                    autoClose: 2000,
                 });
             }
         } catch (error) {
             if (error.response) {
                 toast.error(error.response.data.message, {
                     position: "bottom-left",
-                    autoClose: 3000,
+                    autoClose: 2000,
                 });
             } else {
                 console.error('Error deleting problem:', error);
                 toast.error('An error occurred while trying to delete the problem.', {
                     position: "bottom-left",
-                    autoClose: 3000,
+                    autoClose: 2000,
                 });
             }
         }
@@ -174,7 +178,7 @@ const MotionProblemCard = ({problem,pid,refresh}) => {
                                 </button>
                                     ) : (
                                         <button className={`icon-button lock-button`} onClick={handlePublish}>
-                                    <FontAwesomeIcon icon={faLock}/>
+                                    <FontAwesomeIcon icon={faLock}/> Make Private
                                         </button>
                                     )}
 
@@ -226,7 +230,7 @@ const MotionProblemCard = ({problem,pid,refresh}) => {
                     </Modal.Footer>
                 </Modal>
             </div>
-            <ToastContainer/>
+            {/*<ToastContainer/>*/}
         </div>
     );
 };

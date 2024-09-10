@@ -8,7 +8,7 @@ const SolutionSteps = ({serverResponseSolution}) => {
     if (!serverResponseSolution) {
         return <div>No solution found.</div>; // Display message if no response
     }
-
+    console.log(serverResponseSolution);
     return (
         <div>
             {serverResponseSolution[0].map((response, index) => (
