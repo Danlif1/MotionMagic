@@ -12,7 +12,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
     isPublic = isPublic === "true";
     let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
-    result[1] = stringToMap(result[1]);
+    result[1] = await stringToMap(result[1]);
     if (!result || !creator) {
         return null;
     } else {
