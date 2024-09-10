@@ -23,6 +23,7 @@ import CommentsList from "./CommentsList";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const GlobalSolution = ({problem, pid}) => {
     console.log('again',problem);
     const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +72,7 @@ const GlobalSolution = ({problem, pid}) => {
                 });
             }
         } catch (error) {
-            toast.success(error.response.data.message, {
+            toast.error(error.response.data.message, {
                 position: "bottom-left",
                 autoClose: 3000,
             });

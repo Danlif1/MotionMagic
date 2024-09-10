@@ -18,16 +18,16 @@ const FinalTableEvaluated = ({
                              }) => {
     const [error, setError] = useState(false);
     console.log(finalVarSolutionsScope)
-    let vJ = JSON.parse("{x:1}"
-        .replace(/(\w+):/g, '"$1":')
-        .replace(/'/g, '"'))
+    // let vJ = JSON.parse("{x:1}"
+    //     .replace(/(\w+):/g, '"$1":')
+    //     .replace(/'/g, '"'))
 
     function ev_expr(str) {
 
         try {
             console.log(`trying ${str} with ${finalVarSolutionsScope} scope`);
 
-            let v = math.evaluate(str,vJ)
+            let v = math.evaluate(str,finalVarSolutionsScope)
             return v
         } catch (e) {
             console.log(e)
@@ -43,7 +43,7 @@ const FinalTableEvaluated = ({
                 Final Solutions:
                 <div className='inline-math-container'>
 
-                    <InlineMath math={Object.entries(vJ).map(([key, value]) => `${key}=${value}`).join(', ')}/>
+                    <InlineMath math={Object.entries(finalVarSolutionsScope).map(([key, value]) => `${key}=${value}`).join(', ')}/>
 
                 </div>
             </div>
@@ -73,7 +73,7 @@ const FinalTableEvaluated = ({
                                                         type="text"
                                                         className="form-control"
                                                         placeholder="Time"
-                                                        value={ev_expr(riderData[rider.Name][pathIndex].Time, finalVarSolutionsScope) || ''}
+                                                        value={ev_expr(riderData[rider.Name][pathIndex].Time) || ''}
                                                         onChange={(e) => onChangeFunction(rider.Name, pathIndex, 'time', e.target.value)}
                                                         disabled={!acceptChanges}
                                                     />
@@ -83,7 +83,7 @@ const FinalTableEvaluated = ({
                                                         type="text"
                                                         className="form-control"
                                                         placeholder="Velocity"
-                                                        value={ev_expr(riderData[rider.Name][pathIndex].Velocity, finalVarSolutionsScope) || ''}
+                                                        value={ev_expr(riderData[rider.Name][pathIndex].Velocity) || ''}
                                                         onChange={(e) => onChangeFunction(rider.Name, pathIndex, 'velocity', e.target.value)}
                                                         disabled={!acceptChanges}
                                                     />
@@ -93,7 +93,7 @@ const FinalTableEvaluated = ({
                                                         type="text"
                                                         className="form-control"
                                                         placeholder="Distance"
-                                                        value={ev_expr(riderData[rider.Name][pathIndex].Distance, finalVarSolutionsScope) || ''}
+                                                        value={ev_expr(riderData[rider.Name][pathIndex].Distance) || ''}
                                                         onChange={(e) => onChangeFunction(rider.Name, pathIndex, 'distance', e.target.value)}
                                                         disabled={!acceptChanges}
                                                     />
