@@ -122,6 +122,9 @@ async function publishProblem(problemID, username) {
     }
     problem.Public = !problem.Public;
     await problem.save()
+    const problemIndex = user.Problems.findIndex(p => p.ID === problemID);
+    user.Problems[problemIndex].Public = !user.Problems[problemIndex].Public;
+    await user.save();
     await saveProblemToAll(problemID, problem);
     if (problem.Public) {
         return [200, 'Published problem'];
