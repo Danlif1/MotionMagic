@@ -88,7 +88,7 @@ const History = () => {
                         </div>
                     )}
                     {problems.length === 0 && !error && (
-                        <div>
+                        <div style={{marginLeft: '25px'}}>
                             <h3>No Motion Problem History!</h3>
                         </div>
                     )}

@@ -55,6 +55,32 @@
 .heart-button:hover {
     transform:scale(1.2)
 }
+.publish-button{
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    transition: color 0.3s,transform 0.2s ease-in-out;
+    padding: 0;
+
+}
+
+.publish-button:hover {
+    transform:scale(1.05);
+    color:green;
+}
+.lock-button{
+    background: none;
+    border: none;
+    color: gray;
+    cursor: pointer;
+    transition: color 0.3s,transform 0.2s ease-in-out;
+    padding: 0;
+}
+.lock-button:hover {
+    transform:scale(1.05);
+    color:red;
+}
 /*.my-modal {*/
 /*    --bs-modal-width:100% !important;*/
 /*    width: 80% !important;*/
@@ -116,4 +142,18 @@
 .rightsidesolution::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 
+}
+
+.katex .katex-html .base .mord{
+    white-space: nowrap;
+    word-break: break-all;
+}
+.katex .katex-html .base .mpunct{
+    white-space: nowrap;
+    word-break: break-all;
+}
+.inline-math-container {
+    width: 100%; /* Or a specific width */
+    word-wrap: break-word; /* Allow breaking long text */
+    white-space: normal; /* Prevent text from staying in one line */
 }

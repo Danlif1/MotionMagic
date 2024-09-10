@@ -171,13 +171,13 @@ const GlobalSolution = ({problem, pid}) => {
                         </div>
                     </div>
                 </div>
-                <div className="card-body">
-                    <div className={`card-body ${isOpen ? '' : 'collapsed-content'}`}>
+                <div className="card-body" style={{wordBreak: 'break-all',whiteSpace: 'nowrap'}}>
+                    <div className={`card-body ${isOpen ? '' : 'collapsed-content'}`} >
                         {/*<h5>Equations:</h5>*/}
                         {/*<ShowEquations equationsData={problem.Equations}/>*/}
                         {/*<h5>Solution:</h5>*/}
                         {/*<SolutionSteps serverResponseSolution={problem.Solution}/>*/}
-                        <FullSolution problem={problem} showTable={true}/>
+                        <FullSolution problem={problem} showTable={true} showFinalTableSol={true}/>
                     </div>
                 </div>
                 <div className="card-footer d-flex justify-content-between align-items-center">

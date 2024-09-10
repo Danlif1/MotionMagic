@@ -42,3 +42,10 @@
     display: flex;
     flex-direction: column;
 }
+.publicity{
+
+    /*transition: color 0.3s;*/
+
+    margin-right:200px
+}
+

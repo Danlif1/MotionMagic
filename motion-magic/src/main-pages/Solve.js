@@ -240,9 +240,9 @@ const Solve = () => {
             acc[rider.name] = riderData[rider.name].map((pathData) => (
                 {
                     path: pathData.path,
-                    time: pathData.time ? pathData.time : `t_{${pathData.path},${rider.name}}`,
-                    velocity: pathData.velocity ? pathData.velocity : `v_{${pathData.path},${rider.name}}`,
-                    distance: pathData.distance ? pathData.distance : `d_{${pathData.path},${rider.name}}`
+                    time: pathData.time ? pathData.time : `t_{${pathData.path.replace('↔','')},${rider.name}}`,
+                    velocity: pathData.velocity ? pathData.velocity : `v_{${pathData.path.replace('↔','')},${rider.name}}`,
+                    distance: pathData.distance ? pathData.distance : `d_{${pathData.path.replace('↔','')},${rider.name}}`
                 }
             ));
             return acc;
@@ -261,6 +261,17 @@ const Solve = () => {
 
     }
     const handleSolve = () => {
+        for (let riderName in riderData) {
+            const riderPaths = riderData[riderName];
+            for (let i = 0; i < riderPaths.length; i++) {
+                const {time, velocity, distance} = riderPaths[i];
+                if (!time || !velocity || !distance) {
+                    setError(`Empty input found in ${riderName}'s table for path ${paths[i]}`);
+                    return; // Stop execution if an empty input is found
+                }
+            }
+        }
+        setError('')
         setSolutionVisible(true); // Toggle visibility of solution
         finalizeData()
         console.log(riderData); // You can see the values entered in the table for debugging
@@ -341,6 +352,10 @@ const Solve = () => {
                     <h1 className="d-inline container-lg">Motion Problem Solver</h1>
                     <Button variant="light" href="#" className="mr-2 custom-button home" onClick={gohome}>Home</Button>
                 </span>
+                <div style={{margin: '10px'}}>
+                   <h4> Here you can input your motion problem. All inputs need to be mathematically valid expressions,
+                       and there can be no empty inputs.</h4>
+                </div>
                 <h2 style={{margin: '10px'}}>Problem parameters:</h2>
                 <span className="inputs" style={{margin: '10px'}}>
                     <input
@@ -377,7 +392,7 @@ const Solve = () => {
             </div>
             <div>
                 <h3 style={{margin: '10px'}}>Current Points</h3>
-                <div className="d-flex flex-wrap">
+                <div style={{margin: '10px'}} className="d-flex flex-wrap">
                     {points.map((point, index) => (
                         <div key={index} className="p-2"><InlineMath math={point}/></div>
                     ))}
@@ -440,8 +455,8 @@ const Solve = () => {
             </div>
 
             {solutionVisible && ( // Conditionally render the solution
-                <div>
-                    <h3 style={{margin: '10px'}}>Solution</h3>
+                <div style={{margin: '10px'}}>
+                    <h3 >Solution</h3>
                     <div className="p-2">Points: {points.join(', ')}</div>
                     {riders.map((rider, riderIndex) => (
                         <div key={riderIndex} className="mt-2">
