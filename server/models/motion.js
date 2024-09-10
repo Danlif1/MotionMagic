@@ -92,8 +92,8 @@ const ProblemSchema = new Schema({
         type: String,
         nullable: true
     }], { // The final solution
-        type: String,
-        nullable: true
+        type: Map,
+        of: Number
     }],
     Likes: [{
         type: String,

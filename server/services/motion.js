@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const {logErrorToFile, logActionToFile, logForbiddenToFile, logInternalErrorToFile} = require('../middleware/logger.js');
 const {sendToMultithreadedServer} = require("../connectTCPServer");
 const generateID = require("../middleware/IDgenerator")
+const {stringToMap} = require("./generalFunctions");
 
 async function solveProblem(equations, username, paths, riders, riderData, isPublic){
     if (!equations || !paths || !riders || !riderData) {
@@ -11,6 +12,7 @@ async function solveProblem(equations, username, paths, riders, riderData, isPub
     isPublic = isPublic === "true";
     let creator = await User.findOne({ Username: username });
     let result = await sendToMultithreadedServer(JSON.stringify(equations));
+    result[1] = stringToMap(result[1]);
     if (!result || !creator) {
         return null;
     } else {

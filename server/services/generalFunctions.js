@@ -18,6 +18,23 @@ async function saveProblemToAll(problemID, newProblem) {
     }
 }
 
+async function stringToMap(mapStr) {
+    // Remove curly braces and split the string into key-value pairs
+    const pairs = mapStr.slice(1, -1).split(',');
+
+    // Convert each key-value pair to an array
+    const entries = pairs.map(pair => {
+        const [key, value] = pair.split(':');
+        // Handle value which could be a fraction
+        return [key.trim(), eval(value.trim())];
+    });
+
+    // Create and return the Map
+    return new Map(entries);
+}
+
+
 module.exports = {
-    saveProblemToAll
+    saveProblemToAll,
+    stringToMap
 };
