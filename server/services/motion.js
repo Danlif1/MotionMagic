@@ -110,7 +110,7 @@ async function getLikedProblems(username) {
 async function deleteProblem(username, problemID) {
     let user = await User.findOne({ Username: username});
     let problem = await Problem.findOne({ ID: problemID });
-    if (problem.Creator !== username) {
+    if (problem.CreatorUsername !== username) {
         return [403, "You are not the creator"];
     }
     await Problem.findOneAndDelete({ ID: problemID });
