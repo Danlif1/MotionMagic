@@ -55,10 +55,17 @@ async function getProblem(req, res) {
     }
 }
 
+
+async function publishProblem(req, res) {
+    const result = await globalProblemService.publishProblem(req.params.pid, req.user.username);
+    return res.status(result[0]).json({ message: result[1] });
+}
+
 module.exports = {
     byMostLikes,
     byTime,
     likeProblem,
     commentProblem,
-    getProblem
+    getProblem,
+    publishProblem
 };

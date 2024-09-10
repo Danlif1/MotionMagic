@@ -64,5 +64,16 @@ router.post('/api/problem/:pid/comment', authenticateToken, viewController.comme
  */
 router.get('/api/problem/:pid', viewController.getProblem);
 
+/**
+ * This is the publish/unpublish problem by ID request.
+ * No body.
+ * params (path): problem id.
+ * Type: patch.
+ * Result:
+ * If worked status 200 with the message: Published/Unpublished problem.
+ * If didn't work status 404/403 with a corresponding message (for example: message: Couldn't find problem).
+ */
+router.patch('/api/problem/:pid', authenticateToken, viewController.publishProblem);
+
 module.exports = router;
 

@@ -112,10 +112,29 @@ async function getProblem(problemID) {
     }
 }
 
+async function publishProblem(problemID, username) {
+    const problem = await Problem.findOne({ ID: problemID });
+    const user = await User.findOne({ Username: username });
+    if (!user || !problem) {
+        return [404, 'Problem not found'];
+    } else if (problem.CreatorUsername !== username) {
+        return [403, 'You are not the creator'];
+    }
+    problem.Public = !problem.Public;
+    await problem.save()
+    await saveProblemToAll(problemID, problem);
+    if (problem.Public) {
+        return [200, 'Published problem'];
+    } else {
+        return [200, 'Unpublished problem'];
+    }
+}
+
 module.exports = {
     byTime,
     byMostLikes,
     likeProblem,
     commentProblem,
-    getProblem
+    getProblem,
+    publishProblem
 };
