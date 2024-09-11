@@ -327,12 +327,16 @@ function Signup() {
                     {/* Right side - Logo (60% width) */}
                     <div className="col-8 d-flex flex-column justify-content-start align-items-center right-section1">
                         <h2 className="text-container1">
-                        <TypeWriter  options={{strings:[
-                                "Motion Magic is the best tool to use for solving Motion Problems - Daniel Assa",
-                                "Discover amazing features",
-                                "Join our community today!",
-                                "Explore new opportunities",
-                            ], autoStart:true, loop:true}} /></h2>
+                            <TypeWriter options={{
+                                strings: [
+                                    "Motion Magic is the best tool to use for solving Motion Problems - Daniel Assa",
+                                    "I'm Addicted to Motion Magic - Daniel Lifshitz",
+                                    "Discover amazing features",
+                                    "Join our community today!",
+                                    "Explore new opportunities",
+                                ], autoStart: true, loop: true
+                            }}/></h2>
+                        <h4>Project by Daniel Assa & Daniel Lifshitz</h4>
                         <img src="/logo.png" alt="Logo" className="img-fluid1 logo1"/>
                     </div>
                 </div>

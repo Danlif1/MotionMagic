@@ -140,11 +140,13 @@ function Login({setLoggedIn}) {
                             <TypeWriter options={{
                                 strings: [
                                     "Motion Magic is the best tool to use for solving Motion Problems - Danie Assa",
+                                    "I'm Addicted to Motion Magic - Daniel Lifshitz",
                                     "Discover amazing features",
                                     "Join our community today!",
                                     "Explore new opportunities",
                                 ], autoStart: true, loop: true
                             }}/></h2>
+                        <h2>Project by Daniel Assa & Daniel Lifshitz</h2>
                         <img src="/logo.png" alt="Logo" className="img-fluid1 logo1"/>
                     </div>
                 </div>

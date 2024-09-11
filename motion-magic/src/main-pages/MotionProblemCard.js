@@ -135,7 +135,7 @@ const MotionProblemCard = ({problem,pid,refresh}) => {
 
     return (
         <div className="container mb-3"> {/* Adjust the maxWidth as needed */}
-            <div className="card" style={{minWidth: '1000px'}}>
+            <div className="card" style={{width:'80%'}}>
                 <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
                         <div className="card-header-content">

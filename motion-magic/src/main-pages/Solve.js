@@ -72,6 +72,7 @@ const Solve = () => {
         }
     }, [finalRiderData]);
     useEffect(() => {
+        console.log('ed:',equationsData)
         if (equationsData.length > 0) {
             console.log('Sending solve request')
             sendSolveRequest();
@@ -240,9 +241,9 @@ const Solve = () => {
             acc[rider.name] = riderData[rider.name].map((pathData) => (
                 {
                     path: pathData.path,
-                    time: pathData.time ? pathData.time : `t_{${pathData.path.replace('↔','')},${rider.name}}`,
-                    velocity: pathData.velocity ? pathData.velocity : `v_{${pathData.path.replace('↔','')},${rider.name}}`,
-                    distance: pathData.distance ? pathData.distance : `d_{${pathData.path.replace('↔','')},${rider.name}}`
+                    time: pathData.time ,
+                    velocity: pathData.velocity,
+                    distance: pathData.distance
                 }
             ));
             return acc;
@@ -257,7 +258,8 @@ const Solve = () => {
         console.log(finalRiderData)
         setEquationsData(() => (riders.map((rider) =>
         (finalRiderData[rider.name]?.map((pathData) =>
-            get_eq(pathData.time,pathData.velocity,pathData.distance))))))
+            get_eq(pathData.time,pathData.velocity,pathData.distance))).filter((el)=>el))))
+        //setEquationsData((prev)=>prev.filter((el)=>el))
 
     }
     const handleSolve = () => {
@@ -265,7 +267,7 @@ const Solve = () => {
             const riderPaths = riderData[riderName];
             for (let i = 0; i < riderPaths.length; i++) {
                 const {time, velocity, distance} = riderPaths[i];
-                if (!time || !velocity || !distance) {
+                if ((!time || !velocity || !distance) && (time||velocity||distance)) {
                     setError(`Empty input found in ${riderName}'s table for path ${paths[i]}`);
                     return; // Stop execution if an empty input is found
                 }
@@ -312,6 +314,9 @@ const Solve = () => {
         return expressionPattern.test(trimmedStr);
     };
     const get_eq =(t,v,d) => {
+        if(!t && !v && !d){
+            return ''
+        }
         let nt = Number(t)
         let nv = Number(v)
         let it = Number.isFinite(nt)
