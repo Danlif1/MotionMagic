@@ -41,7 +41,6 @@ async function byMostLikes(nop, username){
             },
             { $sort: { likesCount: -1 } },
         ]);
-        problems = problems.limit(nop);
         for (let problem of problems) {
             if (!problem.Viewers.includes(username)) {
                 problem.Viewers.push(username);
