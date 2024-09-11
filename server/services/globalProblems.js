@@ -27,22 +27,21 @@ async function byTime(nop, username){
     }
 }
 
-function compareFunctionLikes(a,b) {
-    if (a.Likes.length > b.Likes.length) {
-        return 1;
-    } else {
-        return -1;
-    }
-}
-
 async function byMostLikes(nop, username){
     if (!nop) {
         nop = 5
     }
     try {
-        let problems =  await Problem.find({ Public: true })
-            .sort(compareFunctionLikes)  // Sort by Likes in descending order
-            .limit(nop);
+        let problems = await Problem.aggregate([
+            { $match: { Public: true } }, // Filter for public problems
+            {
+                $addFields: { // Add a new field that contains the length of the Likes array
+                    likesCount: { $size: "$Likes" }
+                }
+            },
+            { $sort: { likesCount: -1 } }, // Sort by the new field in descending order
+            { $limit: nop } // Limit the number of results
+        ]);
         for (let problem of problems) {
             if (!problem.Viewers.includes(username)) {
                 problem.Viewers.push(username);
