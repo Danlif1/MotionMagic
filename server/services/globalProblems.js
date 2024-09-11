@@ -33,15 +33,15 @@ async function byMostLikes(nop, username){
     }
     try {
         let problems = await Problem.aggregate([
-            { $match: { Public: true } }, // Filter for public problems
+            { $match: { Public: true } },
             {
-                $addFields: { // Add a new field that contains the length of the Likes array
+                $addFields: {
                     likesCount: { $size: "$Likes" }
                 }
             },
-            { $sort: { likesCount: -1 } }, // Sort by the new field in descending order
-            { $limit: nop } // Limit the number of results
+            { $sort: { likesCount: -1 } },
         ]);
+        problems = problems.limit(nop);
         for (let problem of problems) {
             if (!problem.Viewers.includes(username)) {
                 problem.Viewers.push(username);
