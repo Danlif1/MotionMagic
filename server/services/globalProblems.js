@@ -27,13 +27,21 @@ async function byTime(nop, username){
     }
 }
 
+function compareFunctionLikes(a,b) {
+    if (a.length > b.length) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
+
 async function byMostLikes(nop, username){
     if (!nop) {
         nop = 5
     }
     try {
         let problems =  await Problem.find({ Public: true })
-            .sort({Likes: -1})  // Sort by Likes in descending order
+            .sort(compareFunctionLikes)  // Sort by Likes in descending order
             .limit(nop);
         for (let problem of problems) {
             if (!problem.Viewers.includes(username)) {
