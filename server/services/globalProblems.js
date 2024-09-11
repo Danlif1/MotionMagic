@@ -28,7 +28,7 @@ async function byTime(nop, username){
 }
 
 function compareFunctionLikes(a,b) {
-    if (a.length > b.length) {
+    if (a.Likes.length > b.Likes.length) {
         return 1;
     } else {
         return -1;
