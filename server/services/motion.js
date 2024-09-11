@@ -6,70 +6,74 @@ const generateID = require("../middleware/IDgenerator")
 const {stringToMap} = require("./generalFunctions");
 
 async function solveProblem(equations, username, paths, riders, riderData, isPublic){
-    if (!equations || !paths || !riders || !riderData) {
-        return null;
-    }
-    isPublic = isPublic === "true";
-    let creator = await User.findOne({ Username: username });
-    let result = await sendToMultithreadedServer(JSON.stringify(equations));
-    let finalResult = await stringToMap(result[1]);
-    if (!result || !creator) {
-        return null;
-    } else {
-        let newID;
-        while (true) {
-            newID = generateID(16);
-            const checkProblem = await Problem.findOne({ ID: newID });
-            if (!checkProblem) {
-                break;
+    try {
+        if (!equations || !paths || !riders || !riderData) {
+            return null;
+        }
+        isPublic = isPublic === "true";
+        let creator = await User.findOne({Username: username});
+        let result = await sendToMultithreadedServer(JSON.stringify(equations));
+        let finalResult = await stringToMap(result[1]);
+        if (!result || !creator) {
+            return null;
+        } else {
+            let newID;
+            while (true) {
+                newID = generateID(16);
+                const checkProblem = await Problem.findOne({ID: newID});
+                if (!checkProblem) {
+                    break;
+                }
             }
-        }
-        let _riders = [];
-        for (let rider of riders) {
-            let _rider = await new Rider({
-                Name: rider.name,
-                Paths: rider.paths
-            });
-            await _rider.save();
-            _riders.push(_rider);
-        }
-        const _ridersData = new Map();
-        for (const [key, value] of Object.entries(riderData)) {
-            let data = [];
-            for (const rider of value) {
-                let single_data = await new RiderData({
-                    Path: rider.path,
-                    Time: rider.time,
-                    Velocity: rider.velocity,
-                    Distance: rider.distance
+            let _riders = [];
+            for (let rider of riders) {
+                let _rider = await new Rider({
+                    Name: rider.name,
+                    Paths: rider.paths
                 });
-                await single_data.save();
-                data.push(single_data);
+                await _rider.save();
+                _riders.push(_rider);
             }
-            _ridersData.set(key, data);
-        }
-        const problem = await new Problem({
-            ID: newID,
-            Equations: equations,
-            Solution: result,
-            FinalSolution: finalResult,
-            Creator: creator.DisplayName,
-            CreatorUsername: username,
-            CreatorProfilePic: creator.ProfilePicture,
-            Time: Date.now(),
-            Paths: paths,
-            Riders: _riders,
-            RidersData: _ridersData,
-            Likes: [],
-            Viewers: [],
-            Comments: [],
-            Public: isPublic
-        })
+            const _ridersData = new Map();
+            for (const [key, value] of Object.entries(riderData)) {
+                let data = [];
+                for (const rider of value) {
+                    let single_data = await new RiderData({
+                        Path: rider.path,
+                        Time: rider.time,
+                        Velocity: rider.velocity,
+                        Distance: rider.distance
+                    });
+                    await single_data.save();
+                    data.push(single_data);
+                }
+                _ridersData.set(key, data);
+            }
+            const problem = await new Problem({
+                ID: newID,
+                Equations: equations,
+                Solution: result,
+                FinalSolution: finalResult,
+                Creator: creator.DisplayName,
+                CreatorUsername: username,
+                CreatorProfilePic: creator.ProfilePicture,
+                Time: Date.now(),
+                Paths: paths,
+                Riders: _riders,
+                RidersData: _ridersData,
+                Likes: [],
+                Viewers: [],
+                Comments: [],
+                Public: isPublic
+            })
 
-        await problem.save();
-        creator.Problems.push(problem);
-        await creator.save();
-        return result;
+            await problem.save();
+            creator.Problems.push(problem);
+            await creator.save();
+            return result;
+        }
+    } catch (e) {
+        return null;
     }
 }
 
