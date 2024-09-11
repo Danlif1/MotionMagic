@@ -10,7 +10,7 @@ import {
     faCaretDown,
     faCaretUp,
     faCommentDots,
-    faHeart, faComment, faSync
+    faHeart, faComment, faSync, faShareAlt
 } from '@fortawesome/free-solid-svg-icons';
 import './globalsolution.css';
 import axios from "axios";
@@ -24,6 +24,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import {toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import FullSolutionPDF from './FullSolutionPDF'; // Import the FullSolutionPDF component
+import { Document, Page, PDFDownloadLink } from '@react-pdf/renderer';
+import PDFDocument from "./PDFDocument";
+
 const GlobalSolution = ({problem, pid}) => {
     console.log('again',problem);
     const [isOpen, setIsOpen] = useState(false);
@@ -184,7 +188,7 @@ const GlobalSolution = ({problem, pid}) => {
                 <div className="card-footer d-flex justify-content-between align-items-center">
 
                     <div className="d-flex align-items-center">
-                        <button className={`icon-button heart-button`} onClick={toggleLike}>
+                        <button className={`heart-button`} onClick={toggleLike}>
                             {liked ? (
                                 <FontAwesomeIcon icon={faHeart} style={{color: "#fc7373"}}/>
                             ) : (
@@ -195,11 +199,22 @@ const GlobalSolution = ({problem, pid}) => {
                         <span className="ml-1" style={{marginLeft: '3px', color: "gray"}}> {likes.length}</span>
 
 
-                        <button className="icon-button ml-3" onClick={handleCommentClick} style={{marginLeft: '10px'}}>
+                        <button className=" icon-button ml-3" onClick={handleCommentClick} style={{marginLeft: '10px'}}>
                             <FontAwesomeIcon icon={faComment}/>
                             <span className="ml-1"> Comment</span>
 
                         </button>
+                        <span className="icon-button ml-3" >
+
+                            <PDFDownloadLink
+                                document={<PDFDocument problem={problem} />}
+                                fileName={`solution_${pid}`}
+                                className="share-button"
+                                style={{marginLeft:'10px',color:'gray',textDecoration:'none'}}
+                            >
+            {({ loading }) => (loading ? 'Generating PDF...' : <><FontAwesomeIcon icon={faShareAlt}/> Extract PDF</> )}
+          </PDFDownloadLink>
+                        </span>
                     </div>
 
                     <span style={{color: 'gray',}}>

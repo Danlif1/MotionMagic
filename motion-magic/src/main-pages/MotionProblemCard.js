@@ -10,7 +10,7 @@ import {
     faCaretUp,
     faComment,
     faEye,
-    faHeart, faLock,
+    faHeart, faLock, faShareAlt,
     faTrash,
     faUpload
 } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +20,9 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FullSolution from "./FullSolution"; // Import styles for react-toastify
+import FullSolution from "./FullSolution";
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import PDFDocument from "./PDFDocument";
 const MotionProblemCard = ({problem,pid,refresh}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -168,30 +170,35 @@ const MotionProblemCard = ({problem,pid,refresh}) => {
                 <div className="card-footer d-flex justify-content-between align-items-center">
 
                     <div className="d-flex align-items-center">
-
-                            {!isPublic ? (
-                                <button className={`icon-button publish-button`}
-                                        onClick={() => setShowPublishModal(true)}>
+                        {!isPublic ? (
+                            <button className={`icon-button publish-button`}
+                                    onClick={() => setShowPublishModal(true)}>
                                 <span>
                                 <FontAwesomeIcon icon={faUpload}/> Publish
                                     </span>
-                                </button>
-                                    ) : (
-                                        <button className={`icon-button lock-button`} onClick={handlePublish}>
-                                    <FontAwesomeIcon icon={faLock}/> Make Private
-                                        </button>
-                                    )}
+                            </button>
+                        ) : (
+                            <button className={`icon-button lock-button`} onClick={handlePublish}>
+                                <FontAwesomeIcon icon={faLock}/> Make Private
+                            </button>
+                        )}
 
 
+                            <PDFDownloadLink
+                                document={<PDFDocument problem={problem}/>}
+                                fileName={`solution_${pid}`}
+                                className="share-button"
+                                style={{marginLeft: '10px', color: 'gray', textDecoration: 'none'}}
+                            >
+                                {({loading}) => (loading ? 'Generating PDF...' : <><FontAwesomeIcon icon={faShareAlt}/> Extract PDF</>)}
+                              </PDFDownloadLink>
 
 
+                    </div>
 
 
-                                </div>
-
-
-                                </div>
-                            {/* Delete Confirmation Modal */}
+                </div>
+                {/* Delete Confirmation Modal */}
                 <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                     <Modal.Header closeButton>
                         <Modal.Title>Confirm Delete</Modal.Title>

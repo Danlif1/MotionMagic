@@ -64,6 +64,14 @@
     padding: 0;
 
 }
+.share-button{
+
+    transition: color 0.3s,transform 0.2s ease-in-out;
+}
+.share-button:hover{
+    transform:scale(1.05) !important;
+    color:blue !important;
+}
 
 .publish-button:hover {
     transform:scale(1.05);

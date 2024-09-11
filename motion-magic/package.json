@@ -6,10 +6,12 @@
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@react-pdf/renderer": "^3.4.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
+    "better-react-mathjax": "^2.0.3",
     "bootstrap": "^5.3.3",
     "katex": "^0.16.10",
     "mathjs": "^13.1.1",
@@ -28,8 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "start0": "react-scripts start --host 0.0.0.0"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
