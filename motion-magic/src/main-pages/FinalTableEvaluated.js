@@ -39,14 +39,6 @@ const FinalTableEvaluated = ({
 
     return (
         <>
-            <div>
-                Final Solutions:
-                <div className='inline-math-container'>
-
-                    <InlineMath math={Object.entries(finalVarSolutionsScope).map(([key, value]) => `${key}=${value}`).join(', ')}/>
-
-                </div>
-            </div>
             {!error && st && (
                 <div>
                     <h5>Final Table:</h5>

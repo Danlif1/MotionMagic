@@ -11,7 +11,7 @@ const FullSolution = ({problem,showTable=false,showFinalTableSol=false}) => {
         <h5>Equations:</h5>
         <ShowEquations equationsData={problem.Equations}/>
         <h5>Solution:</h5>
-        <SolutionSteps serverResponseSolution={problem.Solution}/>
+        <SolutionSteps serverResponseSolution={problem.Solution} finalVarSolutionsScope={problem.FinalSolution}/>
         {showTable && (<>
             <h5>Tables:</h5>
             <Table riders={problem.Riders} paths={problem.Paths} riderData={problem.RidersData}/>

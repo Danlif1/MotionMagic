@@ -483,7 +483,7 @@ const Solve = () => {
                             <div>
                                 <h3>Solution Steps:</h3>
                                 {/*<p>{serverResponse}</p>*/}
-                                <SolutionSteps serverResponseSolution={serverResponse}/>
+                                <SolutionSteps serverResponseSolution={serverResponse} finalVarSolutionsScope={serverResponse[1]} sg={true}/>
 
                             </div>
                         )}

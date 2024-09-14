@@ -46,6 +46,9 @@ const ev_expr = (str, scope) => {
 
 
 const FullSolutionPDF = ({ problem }) => {
+    var clone = problem.Solution[0].slice()
+    console.log(problem.FinalSolution)
+    clone.splice(-1,1,'We get that the final solution is '+Object.entries(problem.FinalSolution).map(([key, value]) => `${key}=${value}`).join(', '))
     return (
         <Page style={styles.page}>
             {/* Equations Section */}
@@ -59,13 +62,14 @@ const FullSolutionPDF = ({ problem }) => {
             {/* Solution Steps Section */}
             <View style={styles.section}>
                 <Text style={styles.text}>Solution Steps:</Text>
-                {problem.Solution[0].map((response, index) => (
+                {clone.map((response, index) => (
                     <View key={index} style={styles.section}>
                         {response.split('\n').map((line, idx) => (
                             <Text key={idx} style={styles.text}>{line}</Text>
                         ))}
                     </View>
                 ))}
+
             </View>
 
             {/* Tables Section */}
@@ -112,14 +116,14 @@ const FullSolutionPDF = ({ problem }) => {
             )}
 
             {/* Final Solutions Section */}
-            {problem.FinalSolution && (
-                <View style={styles.section}>
-                    <Text style={styles.text}>Final Solutions:</Text>
-                    <Text style={styles.text}>
-                        {Object.entries(problem.FinalSolution).map(([key, value]) => `${key} = ${value}`).join(', ')}
-                    </Text>
-                </View>
-            )}
+            {/*{problem.FinalSolution && (*/}
+            {/*    <View style={styles.section}>*/}
+            {/*        <Text style={styles.text}>Final Solutions:</Text>*/}
+            {/*        <Text style={styles.text}>*/}
+            {/*            {Object.entries(problem.FinalSolution).map(([key, value]) => `${key} = ${value}`).join(', ')}*/}
+            {/*        </Text>*/}
+            {/*    </View>*/}
+            {/*)}*/}
 
             {/* Final Evaluated Table */}
             <View style={styles.section}>
