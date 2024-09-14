@@ -1,4 +1,4 @@
-# Motion Magic
+# <img src = 'server/public/logo.png' alt="Motion Magic Logo" width="100" align="center" /> &nbsp; Motion Magic
 
 **Final Project by Daniel Assa and Daniel Lifshitz, Bar-Ilan University, Computer Science Department.**
 
