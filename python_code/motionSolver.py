@@ -32,8 +32,8 @@ def solve_non_linear(equations):
         sympy_equations.append(Eq(sympify(lhs.strip()), sympify(rhs.strip())))
 
     solutions = solve(sympy_equations, *variables)
-
-    return solutions
+    result_map = {list(variables)[i]: solutions[0][i] for i in range(len(list(variables)))}
+    return result_map
 
 
 def convert_matrix_to_equation(row, variables):
@@ -230,4 +230,5 @@ def motion_solver(equations):
                 str(solution)]
 
 
-solution = motion_solver(["2*x=1", "y=2"])
+solution = motion_solver(["2*x=1", "y*x=2"])
+print(solution)
