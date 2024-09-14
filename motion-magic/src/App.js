@@ -25,15 +25,24 @@ function App() {
           <Route path='/login' element = {<Login setLoggedIn={setLoggedIn}/>} />
           <Route path='/' element={<Signup/>}/>
           { loggedIn ? (
+              <>
               <Route path='/home' element={<Home setLoggedIn={setLoggedIn}/>}/>
+                  <Route path='/solve' element={<Solve/>} ></Route>
+                  <Route path='/history' element={<History/>} ></Route>
+                  <Route path='/global-solutions' element={<AllGlobalSolutions/>} ></Route>
+              </>
           ) : (
+              <>
               <Route path='/home' element={<Navigate replace to="/" />} ></Route>
+                  <Route path='/solve' element={<Navigate replace to="/" />} ></Route>
+                  <Route path='/history' element={<Navigate replace to="/" />} ></Route>
+                  <Route path='/global-solutions' element={<Navigate replace to="/" />} ></Route>
+              </>
           )
 
           }
-          <Route path='/solve' element={<Solve/>} ></Route>
-            <Route path='/history' element={<History/>} ></Route>
-            <Route path='/global-solutions' element={<AllGlobalSolutions/>} ></Route>
+
+
         </Routes>
       </BrowserRouter>
             <ToastContainer position="bottom-left" autoClose={3000} />
