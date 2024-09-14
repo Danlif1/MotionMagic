@@ -32,7 +32,9 @@ def solve_non_linear(equations):
         sympy_equations.append(Eq(sympify(lhs.strip()), sympify(rhs.strip())))
 
     solutions = solve(sympy_equations, *variables)
-    result_map = {list(variables)[i]: solutions[0][i] for i in range(len(list(variables)))}
+    result_map = solutions
+    if not isinstance(solutions, dict):
+        result_map = {list(variables)[i]: solutions[0][i] for i in range(len(list(variables)))}
     return result_map
 
 
