@@ -2,6 +2,6 @@
 
 **Final Project by Daniel Assa and Daniel Lifshitz, Bar-Ilan University, Computer Science Department.**
 ## Client Side Source Code
-The React source code is in the folder `motion-magic`
+The React source code is in the folder `motion-magic`.
 ## How to Run the Project
 Explanation in https://github.com/Danlif1/MotionMagic.
