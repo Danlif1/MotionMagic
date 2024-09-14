@@ -11,14 +11,11 @@ async function byTime(nop, username){
             .sort({Time: -1})  // Sort by Time in descending order
             .limit(nop);
         for (let problem of problems) {
-            if (!problem.Viewers.includes(username)) {
-                problem.Viewers.push(username);
-                problem.Views += 1;
-                await problem.save();
-                await saveProblemToAll(problem.ID, problem);
-            } else {
-                problem.Views += 1;
-            }
+            problem.Viewers.push(username);
+            problem.Views += 1;
+            await problem.save();
+            await saveProblemToAll(problem.ID, problem);
+
         }
         return problems;
     } catch (error) {
@@ -41,16 +38,6 @@ async function byMostLikes(nop, username){
             },
             { $sort: { likesCount: -1 } },
         ]);
-        for (let problem of problems) {
-            if (!problem.Viewers.includes(username)) {
-                problem.Viewers.push(username);
-                problem.Views += 1;
-                await problem.save();
-                await saveProblemToAll(problem.ID, problem);
-            } else {
-                problem.Views += 1;
-            }
-        }
         return problems;
     } catch (error) {
         console.error('Error fetching problems by time:', error);
