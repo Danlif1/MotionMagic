@@ -144,7 +144,7 @@ const GlobalSolution = ({problem, pid}) => {
 
     return (
         <div className="container mb-3">
-            <div className="card" style={{minWidth: '1000px'}}>
+            <div className="card" style={{width:'80%'}}>
                 <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
                         {/* Creator and Time */}
