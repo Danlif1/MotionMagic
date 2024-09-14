@@ -29,7 +29,7 @@ If you don't have Git Bash, you can either:
 
 
 ## For Unix (Linux/macOS)
-Run:  
+In the root directory of the project, run:  
 ### `sh run.sh`
 
 # View source code
