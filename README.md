@@ -33,4 +33,7 @@ Run:
 ### `sh run.sh`
 
 # View source code
+## Client
 The React source code is located in the `client-side` branch, within the `motion-magic` folder.
+## Server
+The server source code is located within the `server` folder.
