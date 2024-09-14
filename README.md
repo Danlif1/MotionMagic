@@ -1,4 +1,4 @@
-# <img src = 'motion-magic/public/logo.png' alt="Motion Magic Logo" width="100" align="center" /> &nbsp; Motion Magic Client Side Code
+# <img src = 'motion-magic/public/logo.png#gh-light-mode-only' alt="Motion Magic Logo" width="100" align="center" /> <img src = 'motion-magic/public/favicon.ico#gh-dark-mode-only' alt="Motion Magic Logo" width="100" align="center" /> &nbsp; Motion Magic Client Side Code
 
 **Final Project by Daniel Assa and Daniel Lifshitz, Bar-Ilan University, Computer Science Department.**
 ## Client Side Source Code
