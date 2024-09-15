@@ -39,4 +39,4 @@ The React source code is located in the `client-side` branch, within the `motion
 The server source code is located within the `server` folder.
 
 # Video explanation
-[![YouTube Video](https://img.youtube.com/vi/QKB0VqBPMcE/0.jpg)](https://youtu.be/QKB0VqBPMcE?si=GcYYEKfa9_Og6m_F)
+[![YouTube Video](https://img.youtube.com/vi/QKB0VqBPMcE/maxresdefault.jpg)](https://youtu.be/QKB0VqBPMcE?si=GcYYEKfa9_Og6m_F)
